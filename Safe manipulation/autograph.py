@@ -1,14 +1,8 @@
-EXTENDED_LOGGING = False
-
 """
 USAGE:
 {Contact point whole number} and {numerator} over {denominator} at {wheel location}
 {Contact point whole number} at {wheel location}
 """
-
-# set to 0 to deactivate writing to keyboard
-# try lower values like 0.002 (fast) first, take higher values like 0.05 in case it fails
-WRITE_TO_KEYBOARD_INTERVAL = 0.002
 
 #graph = []
 x = []
@@ -52,19 +46,26 @@ def graph_text(text):
 	if len(split_words) == 7:
 		if split_words[0].isdigit():
 			rcp_whole = split_words[0]
+		else:
+			any_errors = True
 		if split_words[1].lower() != "and":
 			any_errors = True
 		if split_words[2].isdigit():
 			numerator = split_words[2]
+		else:
+			any_errors = True
 		if split_words[3].lower() != "over":
 			any_errors = True
 		if split_words[4].isdigit():
 			denominator = split_words[4]
+		else:
+			any_errors = True
 		if split_words[5].lower() != "at":
 			any_errors = True
 		if split_words[6].isdigit():
 			wheel_location = split_words[6]
-			#print(wheel_location)
+		else:
+			any_errors = True
 		if not any_errors:
 			if int(wheel_location) in x:
 				y[x.index(int(wheel_location))] = int(rcp_whole) + int(numerator) / int(denominator)
@@ -78,10 +79,14 @@ def graph_text(text):
 	elif len(split_words) == 3:
 		if split_words[0].isdigit():
 			rcp_whole = split_words[0]
+		else:
+			any_errors = True
 		if split_words[1].lower() != "at":
 			any_errors = True
 		if split_words[2].isdigit():
 			wheel_location = split_words[2]
+		else:
+			any_errors = True
 		if not any_errors:
 			if int(wheel_location) in x:
 				y[x.index(int(wheel_location))] = int(rcp_whole)
@@ -97,10 +102,6 @@ def process_text(text):
 
 if __name__ == '__main__':
 
-	if EXTENDED_LOGGING:
-		import logging
-		logging.basicConfig(level=logging.DEBUG)
-
 	import matplotlib.pyplot as plt
 	import os
 	import sys
@@ -115,49 +116,13 @@ if __name__ == '__main__':
 	unknown_sentence_detection_pause = 0.7
 	mid_sentence_detection_pause = 2.0
 
-	def text_detected(text):
-		global prev_text, displayed_text, rich_text_stored
-
-		text = preprocess_text(text)
-
-		sentence_end_marks = ['.', '!', '?', '。'] 
-		if text.endswith("..."):
-			recorder.post_speech_silence_duration = mid_sentence_detection_pause
-		elif text and text[-1] in sentence_end_marks and prev_text and prev_text[-1] in sentence_end_marks:
-			recorder.post_speech_silence_duration = end_of_sentence_detection_pause
-		else:
-			recorder.post_speech_silence_duration = unknown_sentence_detection_pause
-
-		prev_text = text
-
-		# Build Rich Text with alternating colors
-		rich_text = Text()
-		for i, sentence in enumerate(full_sentences):
-			if i % 2 == 0:
-				#rich_text += Text(sentence, style="bold yellow") + Text(" ")
-				rich_text += Text(sentence, style="yellow") + Text(" ")
-			else:
-				rich_text += Text(sentence, style="cyan") + Text(" ")
-		
-		# If the current text is not a sentence-ending, display it in real-time
-		if text:
-			rich_text += Text(text, style="bold yellow")
-
-		new_displayed_text = rich_text.plain
-
-		if new_displayed_text != displayed_text:
-			displayed_text = new_displayed_text
-			panel = Panel(rich_text, title="[bold green]Live Transcription[/bold green]", border_style="bold green")
-			live.update(panel)
-			rich_text_stored = rich_text
-
 	# Recorder configuration
 	recorder_config = {
 		'spinner': False,
-		'model': 'base.en', # or large-v2 or deepdml/faster-whisper-large-v3-turbo-ct2 or ...
+		'model': 'large-v2', # or large-v2 or deepdml/faster-whisper-large-v3-turbo-ct2 or ...
 		'download_root': None, # default download root location. Ex. ~/.cache/huggingface/hub/ in Linux
 		# 'input_device_index': 1,
-		'realtime_model_type': 'base.en', # or small.en or distil-small.en or ...
+		'realtime_model_type': 'large-v2', # or small.en or distil-small.en or ...
 		'language': 'en',
 		'silero_sensitivity': 0.05,
 		'webrtc_sensitivity': 3,
@@ -166,7 +131,7 @@ if __name__ == '__main__':
 		'min_gap_between_recordings': 0,                
 		'enable_realtime_transcription': True,
 		'realtime_processing_pause': 0.02,
-		'on_realtime_transcription_update': text_detected,
+		#'on_realtime_transcription_update': text_detected,
 		#'on_realtime_transcription_stabilized': text_detected,
 		'silero_deactivity_detection': True,
 		'early_transcription_on_silence': 0,
