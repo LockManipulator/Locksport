@@ -2,6 +2,8 @@
 USAGE:
 {Contact point whole number} and {numerator} over {denominator} at {wheel location}
 {Contact point whole number} at {wheel location}
+
+If the delay after a sentence is too long, find and replace "large-v2" with "base.en" or "tiny.en".
 """
 
 #graph = []
