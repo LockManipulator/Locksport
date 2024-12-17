@@ -10,7 +10,7 @@ Floating Wheels to Cheese Mechanical Safe Locks: Paper detailing a new technique
 
 graphpaper: Printable graph to help with manipulation.
 
-autographer.py: A program that will let you say your contact points out loud and automatically graph it for you.
+autographer.py: A program that will let you say your contact points out loud and automatically graph it for you. See https://github.com/KoljaB/RealtimeSTT/ for required libraries. Only tested on Linux (PopOS) so far.
 
 USAGE:
 {Contact point whole number} and {numerator} over {denominator} at {wheel location}
