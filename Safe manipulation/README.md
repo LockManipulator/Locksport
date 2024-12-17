@@ -2,9 +2,9 @@
 
 Resources for safe manipulation
 
-Safecracking for Everyone (First Edition): First edition of my book on safe manipulation. Uses the AWL method for manipulation. Poorly written. Uploaded for historical reasons. 
+Safecracking for Everyone First Edition: First edition of my book on safe manipulation. Uses the AWL method for manipulation. Poorly written. Uploaded for historical reasons. 
 
-Safecracking for Everyone (Second Edition): Second edition of my book on safe manipulation. Uses the wheel isolation method for manipulation.
+Safecracking for Everyone Second Edition: Second edition of my book on safe manipulation. Uses the wheel isolation method for manipulation.
 
 Floating Wheels to Cheese Mechanical Safe Locks: Paper detailing a new technique to make wheel isolation faster and more reliable.
 
