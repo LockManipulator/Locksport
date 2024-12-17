@@ -14,4 +14,5 @@ autographer.py: A program that will let you say your contact points out loud and
 
 USAGE:
 {Contact point whole number} and {numerator} over {denominator} at {wheel location}
+
 {Contact point whole number} at {wheel location}
