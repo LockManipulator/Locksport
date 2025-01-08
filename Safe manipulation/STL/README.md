@@ -4,4 +4,6 @@
 
 Back covers: Designed for resin but FDM should be fine as well.
 
+Mounts: Designed to fit S&G, LaGard, Mosler, and Diebold with minimal space and material used.
+
 Safe lock: Fully 3D printed group 2 mechanical safe lock. 
