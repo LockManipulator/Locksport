@@ -94,10 +94,6 @@ Solder each part together and put them in the gripper.
 
 
 
-Code f
-
-
-
 The code for the encoder uses Rob Tillaart's AS5600 library https://github.com/RobTillaart/AS5600/tree/master
 
 
