@@ -4,6 +4,9 @@ This requires a decently tuned printer. Press fit parts that are not supposed to
 
  
 
+Assembly video: https://www.youtube.com/watch?v=G01j705tt-Q
+
+
 File names include how many of each to print. To assemble, put each inner wheel inside each outer wheel. WheelInner1 will be wheel 1 and the other two wheels with WheelInner23 will be wheels 2 and 3. This should be a tight fit! Put parts on the mount in this order:
 
  
