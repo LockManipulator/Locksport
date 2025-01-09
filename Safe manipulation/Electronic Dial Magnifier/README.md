@@ -1,5 +1,6 @@
 # Dial magnifier
 
+![alt text]()
 
 This is an encoder that sits on the dial of a safe lock to aid in manipulation. It can read down to 0.088 degrees (1/40th of an increment). 
 
