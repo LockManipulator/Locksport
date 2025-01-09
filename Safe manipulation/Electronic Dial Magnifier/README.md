@@ -139,7 +139,7 @@ RST: to esp pin 12
 5. Screw bar magnet into the bottom of the base and then insert the rod into the top.
 6. Clamp the gripper onto the main encoder body, using one of the m3x20mm bolts and a nut.
 
-There's just enough space for a piece of double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose.
+There's just enough space for a piece of thick double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose.
 
 ## Arduino IDE settings:
 
