@@ -79,7 +79,7 @@ The wires for the screen and sensor will need to be run through the hole in the 
 
 
 
-Charging board: 
+### Charging board: 
 
 Battery '+/-' pads to battery '+/-' wires.
 
@@ -89,13 +89,13 @@ Out '-' to esp32 ground pin.
 
 
 
-On/off switch: 
+### On/off switch: 
 
 One prong to battery '+' pad and one prong to esp32 5v pin.
 
 
 
-Encoder: 
+### Encoder: 
 
 VCC to esp 3v pin
 
@@ -111,7 +111,7 @@ SCL to esp pin 9
 
 
 
-Screen: 
+### Screen: 
 
 VCC: Esp32 5v pin
 
