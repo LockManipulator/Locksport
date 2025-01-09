@@ -23,43 +23,43 @@ Turn the dial exactly to 0 and turn on the device. The encoder will automaticall
 
 
 
-1x Esp32s3 mini: https://a.co/d/dx1Epni
+1x Esp32s3 mini: https://a.co/d/dx1Epni  
 
 
 
-1x 1.28in Screen: https://a.co/d/e5kYErv
+1x 1.28in Screen: https://a.co/d/e5kYErv  
 
 
 
-1x (30.5mmx30mm) 1,000mah battery: https://a.co/d/a7W6ZNP
+1x (30.5mmx30mm) 1,000mah battery: https://a.co/d/a7W6ZNP  
 
 
 
-1x USB-C chage/discharge board: https://a.co/d/149T6ac
+1x USB-C chage/discharge board: https://a.co/d/149T6ac  
 
 
 
-1x On/off switch: https://a.co/d/1uQwlYJ
+1x On/off switch: https://a.co/d/1uQwlYJ  
 
 
 
-1x AS5600 magnetic encoder (with specially polarized magnet: https://a.co/d/66bdv7Q
+1x AS5600 magnetic encoder (with specially polarized magnet: https://a.co/d/66bdv7Q  
 
 
 
-1x Bar magnet (the standard 10x60x5 should be fine to glue in too): https://a.co/d/07pE4ml
+1x Bar magnet (the standard 10x60x5 should be fine to glue in too): https://a.co/d/07pE4ml  
 
 
 
-1x 6.35mmx100mm rod (or print one): https://a.co/d/d7H9jlQ
+1x 6.35mmx100mm rod (or print one): https://a.co/d/d7H9jlQ  
 
 
 
-2x m3 heat insert: https://a.co/d/cIcD6mn
+2x m3 heat insert: https://a.co/d/cIcD6mn  
 
 
 
-7x m3 bolts (1x 10mm, 2x 20mm, 4x 6mm) and 1 m3 nut: https://a.co/d/1uQwlYJ
+7x m3 bolts (1x 10mm, 2x 20mm, 4x 6mm) and 1 m3 nut: https://a.co/d/1uQwlYJ  
 
 
 
