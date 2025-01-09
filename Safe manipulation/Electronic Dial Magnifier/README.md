@@ -78,11 +78,15 @@ Some spare wires
 The wires for the screen and sensor will need to be run through the hole in the bottom of the gripper before soldering. Please test your on/off switch to make sure it's off before wiring it up. Mine is off when the button is clicked in and on when the button is out.
 
 
+
 Charging board: 
 
 Battery '+/-' pads to battery '+/-' wires.
+
 Out '+' pad to one of the on/off switch prongs.
+
 Out '-' to esp32 ground pin.
+
 
 
 On/off switch: 
@@ -90,24 +94,37 @@ On/off switch:
 One prong to battery '+' pad and one prong to esp32 5v pin.
 
 
+
 Encoder: 
 
 VCC to esp 3v pin
+
 OUT to esp pin 12
+
 GND to esp ground
+
 DIR to esp pin 5
+
 SDA to esp pin 8
+
 SCL to esp pin 9
+
 
 
 Screen: 
 
 VCC: Esp32 5v pin
+
 GND: Esp32 ground pin
+
 SCL: to esp pin 2
+
 SDA: to esp pin 3
+
 DC: to esp pin 10
+
 CS: to esp pin 11
+
 RST: to esp pin 12
 
 
