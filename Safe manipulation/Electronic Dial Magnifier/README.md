@@ -107,7 +107,7 @@ GND: Esp32 ground pin
 4. Screw bar magnet into the bottom of the base and then insert the rod into the top.
 5. Clamp the gripper onto the main encoder body, using one of the m3x20mm bolts and a nut.
 
-There's just enough space for a piece of double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose. The hole next to the on/off button in the gripper lid is for the wires from the screen.
+There's just enough space for a piece of double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose. The hole on the bottom of the gripper is for the wires from the screen and sensor.
 
 
 ## Arduino IDE settings:
