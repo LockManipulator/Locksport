@@ -9,8 +9,8 @@ Use:
 
 
 
-1. Slide the leg onto the front of the safe
-2. Slide the encoder onto the leg and make sure it's centered on the dial before tightening the screw on the leg.
+1. Slide the base onto the front of the safe
+2. Slide the encoder onto the metal rod and make sure it's centered on the dial before tightening the screw onto the rod.
 3. If there's not enough friction to spin the encoder then you may need to simply tape it onto the dial. It doesn't take much to get it spinning well with the dial.
 
 
@@ -51,7 +51,15 @@ BOM:
 
 
 
-7x m3 bolts (1x 10mm, 2x 20mm, 4x 6mm): https://a.co/d/1uQwlYJ
+1x 6.35mmx100mm rod (or print one): https://a.co/d/d7H9jlQ
+
+
+
+2x m3 heat insert: https://a.co/d/cIcD6mn
+
+
+
+7x m3 bolts (1x 10mm, 2x 20mm, 4x 6mm) and 1 m3 nut: https://a.co/d/1uQwlYJ
 
 
 
@@ -94,10 +102,12 @@ Assembly guide:
 
 
 1. Insert the magnet holder into the body and then insert the magnet (the magnet makes it hard to put in and out).
-2. Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down). Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file two of the sides of the pcb to fit.
+2. Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down) with the 4 6mm bolts. Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file two of the sides of the pcb to fit.
 3. Solder each part together and put them in the gripper or put them in first and then solder.
+4. Screw bar magnet into the bottom of the base and then insert the rod into the top.
+5. Clamp the gripper onto the main encoder body, using one of the m3x20mm bolts and a nut.
 
-There's just enough space for a piece of double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose. 
+There's just enough space for a piece of double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose. The hole next to the on/off button in the gripper lid is for the wires from the screen.
 
 
 Arduino IDE settings:
