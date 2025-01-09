@@ -22,3 +22,5 @@ USAGE:
 {Contact point whole number} and {numerator} over {denominator} at {wheel location}
 
 {Contact point whole number} at {wheel location}
+
+Graph is finished
