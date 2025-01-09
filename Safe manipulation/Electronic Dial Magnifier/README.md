@@ -1,11 +1,11 @@
-## Dial magnifier
+# Dial magnifier
 
 
 This is an encoder that sits on the dial of a safe lock to aid in manipulation. It can read down to 0.088 degrees (1/40th of an increment). 
 
 
 
-# Use:
+## Use:
 
 
 
@@ -19,7 +19,7 @@ Turn the dial exactly to 0 and turn on the device. The encoder will automaticall
 
 
 
-# BOM: 
+## BOM: 
 
 
 
@@ -67,7 +67,7 @@ Some spare wires
 
 
 
-# Wiring: 
+## Wiring: 
 
 
 The esp32 ground pin will have 3 connections (charging board, screen, and AS5600 encoder). The esp32 5v pin will have 2 connections (on/off switch and screen). Please test your on/off switch to make sure it's off before wiring it up. Mine is off when the button is clicked in and on when the button is out.
@@ -97,7 +97,7 @@ GND: Esp32 ground pin
 
 
 
-# Assembly guide:
+## Assembly guide:
 
 
 
@@ -110,7 +110,7 @@ GND: Esp32 ground pin
 There's just enough space for a piece of double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose. The hole next to the on/off button in the gripper lid is for the wires from the screen.
 
 
-# Arduino IDE settings:
+## Arduino IDE settings:
 
 Board: ESP32S3 Dev Module
 USB CDC on boot - Enabled
