@@ -70,7 +70,7 @@ Some spare wires
 ## Wiring: 
 
 
-The esp32 ground pin will have 3 connections (charging board, screen, and AS5600 encoder). The esp32 5v pin will have 2 connections (on/off switch and screen).  The wires for the screen and sensor will need to be run through the hole in the bottom of the gripper before soldering. Please test your on/off switch to make sure it's off before wiring it up. Mine is off when the button is clicked in and on when the button is out.
+The wires for the screen and sensor will need to be run through the hole in the bottom of the gripper before soldering. Please test your on/off switch to make sure it's off before wiring it up. Mine is off when the button is clicked in and on when the button is out.
 
 
 Charging board: 
@@ -87,13 +87,23 @@ One prong to battery '+' pad and one prong to esp32 5v pin.
 
 Encoder: 
 
-
+VCC to esp 3v pin
+OUT to esp pin 12
+GND to esp ground
+DIR to esp pin 5
+SDA to esp pin 8
+SCL to esp pin 9
 
 
 Screen: 
 
 VCC: Esp32 5v pin
 GND: Esp32 ground pin
+SCL: 2
+SDA: 3
+DC: 10
+CS: 11
+RST: 12
 
 
 
