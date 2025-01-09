@@ -112,23 +112,23 @@ There's just enough space for a piece of double sided tape under the battery if 
 
 ## Arduino IDE settings:
 
-Board: ESP32S3 Dev Module
-USB CDC on boot - Enabled
-CPU Frequency: 240MHz (WiFi)
-Core Debug Level: None
-USB DFU On Boot: Disabled
-Erase All Flash Before Sketch Upload: Disabled
-Events Run On: Core 1
-Flash Mode: QIO 80MHz
-Flash Size: 4MB (32MB)
-JTAG Adapter: Disabled
-Arduino Runs On: Core 1
-USB Firmware MSC On Boot: Disabled
-Partition Scheme: Huge APP (3MB No OTA/1MB SPIFFS)
-PSRAM: QSPI PSRAM
-Upload Mode: UART0/Hardware CDC
-Upload Speed: 921600
-USB Mode: Hardware CDC and JTAG
+Board: ESP32S3 Dev Module  
+USB CDC on boot - Enabled  
+CPU Frequency: 240MHz (WiFi)  
+Core Debug Level: None  
+USB DFU On Boot: Disabled  
+Erase All Flash Before Sketch Upload: Disabled  
+Events Run On: Core 1  
+Flash Mode: QIO 80MHz  
+Flash Size: 4MB (32MB)  
+JTAG Adapter: Disabled  
+Arduino Runs On: Core 1  
+USB Firmware MSC On Boot: Disabled  
+Partition Scheme: Huge APP (3MB No OTA/1MB SPIFFS)  
+PSRAM: QSPI PSRAM  
+Upload Mode: UART0/Hardware CDC  
+Upload Speed: 921600  
+USB Mode: Hardware CDC and JTAG  
 
 
 The code for the encoder uses Rob Tillaart's AS5600 library https://github.com/RobTillaart/AS5600/tree/master
