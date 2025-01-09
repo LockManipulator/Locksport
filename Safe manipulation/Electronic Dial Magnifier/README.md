@@ -70,7 +70,7 @@ Some spare wires
 ## Wiring: 
 
 
-The esp32 ground pin will have 3 connections (charging board, screen, and AS5600 encoder). The esp32 5v pin will have 2 connections (on/off switch and screen). Please test your on/off switch to make sure it's off before wiring it up. Mine is off when the button is clicked in and on when the button is out.
+The esp32 ground pin will have 3 connections (charging board, screen, and AS5600 encoder). The esp32 5v pin will have 2 connections (on/off switch and screen).  The wires for the screen and sensor will need to be run through the hole in the bottom of the gripper before soldering. Please test your on/off switch to make sure it's off before wiring it up. Mine is off when the button is clicked in and on when the button is out.
 
 
 Charging board: 
@@ -107,8 +107,7 @@ GND: Esp32 ground pin
 4. Screw bar magnet into the bottom of the base and then insert the rod into the top.
 5. Clamp the gripper onto the main encoder body, using one of the m3x20mm bolts and a nut.
 
-There's just enough space for a piece of double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose. The hole on the bottom of the gripper is for the wires from the screen and sensor.
-
+There's just enough space for a piece of double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose.
 
 ## Arduino IDE settings:
 
