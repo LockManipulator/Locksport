@@ -137,7 +137,7 @@ RST: to esp pin 12
 3. Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down) with the 4 6mm bolts. Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file two of the sides of the pcb to fit.
 4. Solder each part together and put them in the gripper or put them in first and then solder.
 5. Screw bar magnet into the bottom of the base and then insert the rod into the top.
-6. Clamp the gripper onto the main encoder body, using one of the m3x20mm bolts and a nut.
+6. Clamp the gripper onto the main encoder body, using the m3x10mm bolt and a nut.
 
 There's just enough space for a piece of thick double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose.
 
