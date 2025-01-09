@@ -9,14 +9,13 @@ Use:
 
 
 
-Slide the legs onto the front of the safe
-Slide the encoder onto one of the legs and make sure it's centered on the dial before adjusting the second leg to match.
-Slide the encoder onto the dial and tighten the screws on the legs.
-If there's not enough friction to spin the encoder then you may need to simply tape it onto the dial. It doesn't take much to get it spinning well with the dial.
+1. Slide the leg onto the front of the safe
+2. Slide the encoder onto the leg and make sure it's centered on the dial before tightening the screw on the leg.
+3. If there's not enough friction to spin the encoder then you may need to simply tape it onto the dial. It doesn't take much to get it spinning well with the dial.
 
 
 
-Turn the dial exactly to 0 and turn on the device. The encoder will automatically center on zero so don't touch the dial until the number 0 appears on the screen. The encoder can be used as is or you can connect to it's wifi for greater capabilities. Just connect to the wifi “Encoder”, no password, and go to 192.168.0.1 in a web browser. The web page is password protected with a username of “root” and password of “toor” (no quotes in either). You can plot points to be graphed live and even download the graph as an image. The web page also shows the current value on the encoder in case you didn't get a screen.
+Turn the dial exactly to 0 and turn on the device. The encoder will automatically center on zero so don't touch the dial until the number 0 appears on the screen. The encoder can be used as is or you can connect to it's wifi for greater capabilities. Just connect to the wifi “Encoder”, no password, and go to 192.168.0.1 in a web browser. The web page is password protected with a username of “root” and password of “toor” (no quotes in either). You can also plot points to be graphed live and even download the graph as an image. The web page will also shows the current value on the encoder in case you didn't get a screen.
 
 
 
@@ -52,7 +51,7 @@ BOM:
 
 
 
-2x m3 bolts (1x >10mm 1x >6mm): https://a.co/d/1uQwlYJ
+7x m3 bolts (1x 10mm, 2x 20mm, 4x 6mm): https://a.co/d/1uQwlYJ
 
 
 
@@ -63,24 +62,30 @@ Some spare wires
 Wiring: 
 
 
+The esp32 ground pin will have 3 connections (charging board, screen, and AS5600 encoder). The esp32 5v pin will have 2 connections (on/off switch and screen). Please test your on/off switch to make sure it's off before wiring it up. Mine is off when the button is clicked in and on when the button is out.
 
-Charge/discarge board: 
 
-Battery +/- to the battery +/- wires.
-Out + to one of the on/off switch prongs.
-Out - to esp32 ground pin.
+Charging board: 
 
+Battery '+/-' pads to battery '+/-' wires.
+Out '+' pad to one of the on/off switch prongs.
+Out '-' to esp32 ground pin.
+
+
+On/off switch: 
+
+One prong to battery '+' pad and one prong to esp32 5v pin.
 
 
 Encoder: 
 
-Encoder dir pin to esp ground. 
 
 
 
 Screen: 
 
-
+VCC: Esp32 5v pin
+GND: Esp32 ground pin
 
 
 
@@ -88,10 +93,32 @@ Assembly guide:
 
 
 
-Insert the magnet holder into the body and then insert the magnet (the magnet makes it hard to put in and out).
-Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down). Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file two of the sides of the pcb to fit.
-Solder each part together and put them in the gripper.
+1. Insert the magnet holder into the body and then insert the magnet (the magnet makes it hard to put in and out).
+2. Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down). Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file two of the sides of the pcb to fit.
+3. Solder each part together and put them in the gripper or put them in first and then solder.
 
+There's just enough space for a piece of double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose. 
+
+
+Arduino IDE settings:
+
+Board: ESP32S3 Dev Module
+USB CDC on boot - Enabled
+CPU Frequency: 240MHz (WiFi)
+Core Debug Level: None
+USB DFU On Boot: Disabled
+Erase All Flash Before Sketch Upload: Disabled
+Events Run On: Core 1
+Flash Mode: QIO 80MHz
+Flash Size: 4MB (32MB)
+JTAG Adapter: Disabled
+Arduino Runs On: Core 1
+USB Firmware MSC On Boot: Disabled
+Partition Scheme: Huge APP (3MB No OTA/1MB SPIFFS)
+PSRAM: QSPI PSRAM
+Upload Mode: UART0/Hardware CDC
+Upload Speed: 921600
+USB Mode: Hardware CDC and JTAG
 
 
 The code for the encoder uses Rob Tillaart's AS5600 library https://github.com/RobTillaart/AS5600/tree/master
