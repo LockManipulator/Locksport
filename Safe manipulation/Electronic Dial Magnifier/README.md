@@ -15,7 +15,11 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 
 
 
-Turn the dial exactly to 0 and turn on the device. The encoder will automatically center on zero so don't touch the dial until the number 0 appears on the screen. The encoder can be used as is or you can connect to it's wifi for greater capabilities. Just connect to the wifi “Encoder”, no password, and go to 192.168.0.1 in a web browser. The web page is password protected with a username of “root” and password of “toor” (no quotes in either). You can also plot points to be graphed live and even download the graph as an image. The web page will also shows the current value on the encoder in case you didn't get a screen.
+Turn the dial exactly to 0 and turn on the device. The encoder will automatically center on zero so don't touch the dial until the number 0 appears on the screen. The encoder can be used as is or you can connect to it's wifi for greater capabilities. Just connect to the wifi “Encoder”, no password, and go to 192.168.0.1 in a web browser. The web page is password protected with a username of “root” and password of “toor” (no quotes in either). The web page will also shows the current value on the encoder in case you didn't get a screen.
+
+- Graph is broken currently. Will fix soon.
+
+- Will add features to change color of text and background, font, etc.
 
 
 
@@ -99,23 +103,23 @@ Screen:
 
 VCC: Esp32 5v pin
 GND: Esp32 ground pin
-SCL: 2
-SDA: 3
-DC: 10
-CS: 11
-RST: 12
+SCL: to esp pin 2
+SDA: to esp pin 3
+DC: to esp pin 10
+CS: to esp pin 11
+RST: to esp pin 12
 
 
 
 ## Assembly guide:
 
 
-
-1. Insert the magnet holder into the body and then insert the magnet (the magnet makes it hard to put in and out).
-2. Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down) with the 4 6mm bolts. Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file two of the sides of the pcb to fit.
-3. Solder each part together and put them in the gripper or put them in first and then solder.
-4. Screw bar magnet into the bottom of the base and then insert the rod into the top.
-5. Clamp the gripper onto the main encoder body, using one of the m3x20mm bolts and a nut.
+1. Insert the two m3 heat inserts into the gripper lid.
+2. Insert the magnet holder into the body and then insert the magnet (the magnet makes it hard to put in and out).
+3. Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down) with the 4 6mm bolts. Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file two of the sides of the pcb to fit.
+4. Solder each part together and put them in the gripper or put them in first and then solder.
+5. Screw bar magnet into the bottom of the base and then insert the rod into the top.
+6. Clamp the gripper onto the main encoder body, using one of the m3x20mm bolts and a nut.
 
 There's just enough space for a piece of double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose.
 
