@@ -1,6 +1,6 @@
 # Dial magnifier
 
-![alt text]()
+![alt text](https://github.com/LockManipulator/Locksport/blob/main/Safe%20manipulation/Electronic%20Dial%20Magnifier/Images/encoder_safe_front.jpg?raw=true)
 
 This is an encoder that sits on the dial of a safe lock to aid in manipulation. It can read down to 0.088 degrees (1/40th of an increment). 
 
