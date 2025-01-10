@@ -28,6 +28,10 @@ Turn the dial exactly to 0 and turn on the device. The encoder will automaticall
 
 
 
+1 of each print file
+
+
+
 1x Esp32s3 mini: https://a.co/d/dx1Epni  
 
 
