@@ -1,4 +1,4 @@
-# Safe lock
+# Demo lock
 
 
 
@@ -6,7 +6,7 @@
 
 
 
-File names include how many of each to print. Put parts on the mount in this order:
+File names include how many of each to print. Short pin get glued to wheel 1, and the long pins get glued to wheels 2 and 3. Put parts on the mount in this order:
 
  
 

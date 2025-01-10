@@ -1,7 +1,8 @@
 # Safe lock
 
 
-![alt text](https://github.com/LockManipulator/Locksport/blob/main/Safe%20manipulation/STL/Safe%20lock/safe-closed.jpg?raw=true)
+![alt text](https://github.com/LockManipulator/Locksport/blob/main/Safe%20manipulation/STL/Safe%20lock/mounted-back.jpg?raw=true)
+
 
 
 This requires a decently tuned printer. Press fit parts that are not supposed to move have 0.1mm of clearance and parts that are supposed to fit and still rotate without being loose have 0.2mm tolerance. No supports, gluing, or anything other than 3D printed parts are needed!
@@ -40,3 +41,7 @@ To get the numbers on the dial I just added text using my slicer. You can use th
  
 
 To change the combination just pop out the inner wheels and put them back with a different rotation.
+
+
+
+![alt text](https://github.com/LockManipulator/Locksport/blob/main/Safe%20manipulation/STL/Safe%20lock/safe-closed.jpg?raw=true)
