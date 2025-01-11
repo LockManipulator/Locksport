@@ -68,7 +68,7 @@ The below links are simply the exact items I bought. It will most likely be chea
 
 
 
-1x On/off switch (18mmx12mmx10mm): https://a.co/d/1uQwlYJ  
+1x On/off switch (18mmx12mmx10mm): https://a.co/d/1Zt4meo  
 
 
 
