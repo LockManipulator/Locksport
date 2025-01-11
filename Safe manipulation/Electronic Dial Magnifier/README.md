@@ -20,15 +20,19 @@ Turn the dial exactly to 0 and turn on the device. The encoder will automaticall
 
 
 
-## Bugs/Features
+## To do
 
 
 
-- Lags for a couple seconds on connecting to web page.
+To do (in no particular oder):
 
 
-
-- Will add features to change color of text and background, font, etc.
+1. Fix lag when opening web page.
+2. Use config file to save preferences.
+3. Multiple boot screens.
+4. Dial borders.
+5. Face styles.
+6. Change and save colors from web page.
 
 
 
