@@ -1,24 +1,32 @@
 /*
-Bugs:
-Graphing
-Screen flickering
+Uploading web page to esp32 storage
+-----------------------------------
+Make sure your arduino sketch has a folder called 'data' with the index.html file in it.
+Download the latest .vsix file from https://github.com/earlephilhower/arduino-littlefs-upload/releases
+Put it in ~/.arduinoIDE/plugins/ on Mac and Linux or C:\Users\<username>\.arduinoIDE\plugins\ on Windows (you may need to make this directory yourself beforehand)
+Restart the IDE
+[Ctrl] + [Shift] + [P], then "Upload LittleFS to Pico/ESP8266/ESP32".
 
-To do (in no particular oder):
+On macOS, press [⌘] + [Shift] + [P] to open the Command Palette in the Arduino IDE, then "Upload LittleFS to Pico/ESP8266/ESP32".
+
+
+To do:
+-----
 1. Use config file to save preferences.
 2. Multiple boot screens.
 3. Dial borders.
 4. Face styles.
-5. Change and save colors on web page.
+5. Change and save colors from web page.
 */
 
 #include "AS5600.h"
 #include <WiFi.h>
 #include "AsyncTCP.h"
 #include "ESPAsyncWebServer.h"
-#include "CustomWeb.h"
 #include "SPI.h"
 #include "Adafruit_GFX.h"
 #include "Adafruit_GC9A01A.h"
+#include <LittleFS.h>
 
 #define TFT_MOSI 3  // SDA but really MOSI
 #define TFT_SCLK 2  // SCL but really SCLK
@@ -30,17 +38,23 @@ To do (in no particular oder):
 Adafruit_GC9A01A tft(TFT_CS, TFT_DC);
 int tftWidth = tft.width();
 int tftHeight = tft.height();
-int canvasWidth = tftWidth; // If we want to save resources by not having a fullscreen canvas.
-int canvasHeight = tftHeight;
-int prevX = 0;
-int prevY = 0;
-//GFXcanvas1 canvas(canvasWidth, canvasHeight); // A 2 color canvas to draw to so we can avoid screen flickering at the expense of memory.
-int rotation = 2; // Default screen rotation is 2. Makes the protrusion up.
+int prevX = tftWidth / 2;
+int prevY = tftHeight / 2;
+int rotation = 2; // Default screen rotation is 2. Makes the protrusion from the screen point up.
 int textSize = 5; // Default text size is 5.
 uint16_t background = GC9A01A_BLACK;  // Background. Default is GC9A01A_BLACK.
 uint16_t foreground = GC9A01A_WHITE;  // Text. Default is GC9A01A_WHITE.
-bool bootOn = true;   // Controls whether or not to show a boot screen (if false, may lead to screen not showing exactly 0 on startup). Default is true.
-int bootTime = 1000;  // Amount of milliseconds to show the boot screen for. Default is 1000.
+bool bootOn = true;                   // Controls whether or not to show a boot screen (if false, may lead to screen not showing exactly 0 on startup). Default is true.
+int bootTime = 1000;                  // Amount of milliseconds to show the boot screen for. Default is 1000.
+bool drawBorder = true;               // Whether or not to draw a border around the screen.
+float borderThickness = 0.1;          // Thickness of the border in percentage of the radius of the screen.
+uint16_t borderColor = GC9A01A_WHITE; // Color of the border.
+bool drawPointer = true;              // Whether or not to have a fancy animated pointer. Works with or without border, adjusts to inside the border if border is enabled.
+int pointerSize = tftWidth * 0.075;   // Size of the pointer.
+int prev_x1 = 0;
+int prev_x2 = 0;
+int prev_y1 = 0;
+int prev_y2 = 0;
 
 // Encoder variabes
 AS5600 as5600;              // Use default Wire
@@ -58,10 +72,17 @@ String loginpassword = "toor";       // Web page login page password
 IPAddress local_ip(192, 168, 0, 1);  // Go to 192.168.0.1 in a browser to control device
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
+String header;
 AsyncWebServer server(80);
 
 void setup() {
   Serial.begin(115200);
+
+  // Initialize LittleFS
+  if (!LittleFS.begin()) {
+    Serial.println("LittleFS mount failed");
+    return;
+  }
 
   // Start the screen
   SPI.begin(TFT_SCLK, -1, TFT_MOSI, TFT_CS);
@@ -84,12 +105,42 @@ void setup() {
     if (!request->authenticate((char *)loginname.c_str(), (char *)loginpassword.c_str())) {
       return request->requestAuthentication();
     }
-    request->send_P(200, "text/html", SendHTML);
+
+    request->send(LittleFS, "/index.html", "text/html");
   });
 
   // Sends the current dial position to the web page
   server.on("/sensor", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send_P(200, "text/text", String(sensorData).c_str());
+  });
+
+  server.on("/bgcolor", HTTP_GET, [](AsyncWebServerRequest *request) {
+    background = tft.color565(request->getParam("r")->value().toInt(), request->getParam("g")->value().toInt(), request->getParam("b")->value().toInt());
+
+    // Draw border around screen if enabled
+    if (drawBorder) {
+      tft.fillScreen(background);
+      tft.fillCircle(tftWidth / 2, tftHeight / 2, tftWidth / 2, borderColor);
+      tft.fillCircle(tftWidth / 2, tftHeight / 2, int((tftWidth / 2) * (1 - borderThickness)), background);
+    }
+    update_display();
+
+    request->send_P(200, "text/text", "true");
+  });
+
+  server.on("/fgcolor", HTTP_GET, [](AsyncWebServerRequest *request) {
+    foreground = tft.color565(request->getParam("r")->value().toInt(), request->getParam("g")->value().toInt(), request->getParam("b")->value().toInt());
+    borderColor = foreground;
+
+    // Draw border around screen if enabled
+    if (drawBorder) {
+      tft.fillScreen(background);
+      tft.fillCircle(tftWidth / 2, tftHeight / 2, tftWidth / 2, borderColor);
+      tft.fillCircle(tftWidth / 2, tftHeight / 2, int((tftWidth / 2) * (1 - borderThickness)), background);
+    }
+    update_display();
+
+    request->send_P(200, "text/text", "true");
   });
 
   // Graphs the data user inputs on the website
@@ -134,11 +185,21 @@ void setup() {
   server.onNotFound(notFound);
   server.begin();
 
+  update_display(); // This is needed to ensure no artifacting
+
   // The esp turns on pretty fast so the movement of releasing the on button causes the screen to start just slightly off of 0 occasionally.
   // This is both a cool artificial boot screen and a delay before zero'ing the dial to ensure no unwanted movement.
   if (bootOn) {
     boot_display();
   }
+
+  // Draw border around screen if enabled
+  if (drawBorder) {
+    tft.fillScreen(background);
+    tft.fillCircle(tftWidth / 2, tftHeight / 2, tftWidth / 2, borderColor);
+    tft.fillCircle(tftWidth / 2, tftHeight / 2, int((tftWidth / 2) * (1 - borderThickness)), background);
+  }
+
   baseLine = as5600.rawAngle(); // Zero out our encoder
   update_display();
 }
@@ -252,7 +313,7 @@ void draw_dial() {
   }
 
   // Wait long enough to make sure we're not touching the encoder
-  delay(1500);
+  delay(2000);
 }
 
 float getInc() {
@@ -272,33 +333,88 @@ float getInc() {
 void update_display() {
   String numberStr = String(sensorData);
 
+  // Variables for centering on screen
+  int16_t screenWidth = tftWidth;
+  int16_t screenHeight = tftHeight;
+  int textWidth = numberStr.length() * 6 * textSize; // 6 pixels per char
+  int textHeight = 8 * textSize;                    // 8 pixels height per char
+  int16_t x = (screenWidth - textWidth) / 2;
+  int16_t y = (screenHeight - textHeight) / 2;
+
+  // Erase previous text
   tft.setTextColor(background);
   tft.setCursor(prevX, prevY);
   tft.println(String(prev_sensorData));
 
-  // Display a number in the center of the screen
-  int16_t screenWidth = tftWidth;
-  int16_t screenHeight = tftHeight;
-
-  // Calculate text position for centering
-  int textWidth = numberStr.length() * 6 * textSize; // 6 pixels per char, size 3
-  int textHeight = 8 * textSize;                    // 8 pixels height per char, size 3
-  int16_t x = (screenWidth - textWidth) / 2;
-  int16_t y = (screenHeight - textHeight) / 2;
-
   // Set cursor and display the text
-  prevX = x;
-  prevY = y;
-  prev_sensorData = sensorData;
   tft.setTextColor(foreground);
   tft.setCursor(x, y);
   tft.println(numberStr);
 
-/*
-  canvas.setCursor(x, y);
-  canvas.println(numberStr);
-  tft.drawBitmap(x, y, canvas.getBuffer(), canvasWidth, canvasHeight, foreground, background); // Copy to screen
-*/
+  // Draw pointer
+  if (drawPointer) {
+    // Erase previous pointer
+    float angle = ((100 - prev_sensorData) * 3.6) - 90; // Make sure 0 is at the top of the screen and we're following 0 with the pointer
+    prev_sensorData = sensorData;
+
+    // Convert angle to radians
+    float angleRad = radians(angle);
+    
+    int startX = tftWidth / 2;
+    int startY = tftHeight / 2;
+
+    // Calculate the starting point (18 pixels away from the center along the angle)
+    if (drawBorder) {
+      startX = (tftWidth / 2) + (((tftWidth / 2) * (1 - borderThickness)) * cos(angleRad));
+      startY = (tftHeight / 2) + (((tftHeight / 2) * (1 - borderThickness)) * sin(angleRad));
+    }
+
+    // Calculate the other two points of the isosceles triangle
+    // The acute angle will be split symmetrically on either side
+    float halfAngle = radians(45 / 2); // Half the acute angle to split it evenly
+    
+    // Draw the isosceles triangle
+    tft.fillTriangle(startX, startY, prev_x1, prev_y1, prev_x2, prev_y2, background);
+
+
+
+    // Draw moving pointer
+    angle = ((100 - sensorData) * 3.6) - 90; // Make sure 0 is at the top of the screen and we're following 0 with the pointer
+    
+    // Convert angle to radians
+    angleRad = radians(angle);
+    
+    startX = tftWidth / 2;
+    startY = tftHeight / 2;
+
+    // Calculate the starting point (18 pixels away from the center along the angle)
+    if (drawBorder) {
+      startX = (tftWidth / 2) + (((tftWidth / 2) * (1 - borderThickness)) * cos(angleRad));
+      startY = (tftHeight / 2) + (((tftHeight / 2) * (1 - borderThickness)) * sin(angleRad));
+    }
+    
+    // Calculate the other two points of the isosceles triangle
+    // The acute angle will be split symmetrically on either side
+    halfAngle = radians(45 / 2); // Half the acute angle to split it evenly
+
+    // Calculate the two other points based on the isosceles property
+    int x1 = startX - pointerSize * cos(angleRad - halfAngle);
+    int y1 = startY - pointerSize * sin(angleRad - halfAngle);
+    
+    int x2 = startX - pointerSize * cos(angleRad + halfAngle);
+    int y2 = startY - pointerSize * sin(angleRad + halfAngle);
+
+    prev_x1 = x1;
+    prev_x2 = x2;
+    prev_y1 = y1;
+    prev_y2 = y2;
+    
+    // Draw the isosceles triangle
+    tft.fillTriangle(startX, startY, x1, y1, x2, y2, borderColor);
+  }
+
+  prevX = x;
+  prevY = y;
 }
 
 void notFound(AsyncWebServerRequest *request) {

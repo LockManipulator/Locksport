@@ -24,15 +24,11 @@ Turn the dial exactly to 0 and turn on the device. The encoder will automaticall
 
 
 
-To do (in no particular oder):
-
-
-1. Fix lag when opening web page.
-2. Use config file to save preferences.
-3. Multiple boot screens.
-4. Dial borders.
-5. Face styles.
-6. Change and save colors from web page.
+1. Use config file to save preferences.
+2. Multiple boot screens.
+3. Dial borders.
+4. Face styles.
+5. Change and save colors from web page.
 
 
 
@@ -171,11 +167,36 @@ Flash Size: 4MB (32MB)
 JTAG Adapter: Disabled  
 Arduino Runs On: Core 1  
 USB Firmware MSC On Boot: Disabled  
-Partition Scheme: Huge APP (3MB No OTA/1MB SPIFFS)  
+Partition Scheme: Default 4MB with SPIFFS (1.2MB APP/1.5MB SPIFFS)
 PSRAM: QSPI PSRAM  
 Upload Mode: UART0/Hardware CDC  
 Upload Speed: 921600  
 USB Mode: Hardware CDC and JTAG  
+
+
+
+If you're using Arduino IDE above version 1.8:
+
+
+
+Make sure your arduino sketch project folder has a folder called 'data' with the index.html file in it. The 'data' folder should be in the same directory as encoder.ino.
+
+
+
+Download the latest .vsix file from https://github.com/earlephilhower/arduino-littlefs-upload/releases
+
+
+
+Put it in ~/.arduinoIDE/plugins/ on Mac and Linux or C:\Users\<username>\.arduinoIDE\plugins\ on Windows (you may need to make this directory yourself beforehand)
+
+
+
+Restart the IDE
+
+
+
+[Ctrl] + [Shift] + [P], then "Upload LittleFS to Pico/ESP8266/ESP32".
+
 
 
 The code for the encoder uses Rob Tillaart's AS5600 library https://github.com/RobTillaart/AS5600/tree/master

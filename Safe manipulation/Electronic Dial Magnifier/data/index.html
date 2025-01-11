@@ -1,4 +1,3 @@
-const char* SendHTML = R"rawLiteral(
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +20,13 @@ const char* SendHTML = R"rawLiteral(
     <label for="lcontactpoint">Left contact point: </label><input type="text" id="lcontactpoint" name="contactpoint" size="5"><br><br>
     <button id="plot">Plot</button><br><br>
     <button id="cleargraph">Clear graph</button><br><br>
-    <button id="savegraph">Save graph</button><br><br>
+    <button id="savegraph">Save graph</button><br><br><br>
+
+    Screen color settings (RGB values)<br>
+    <label for="r">R: </label><input type="text" id="r" name="red" size="5"><br>
+    <label for="g">G: </label><input type="text" id="g" name="green" size="5"><br>
+    <label for="b">B: </label><input type="text" id="b" name="blue" size="5"><br>
+    <button id="changeBackground">Set background color</button>  <button id="changeForeground">Set foreground color</button><br><br>
     <script>
 
 /*!
@@ -16206,12 +16211,14 @@ const graph = new Chart(document.getElementById('graph').getContext('2d'), {
         data: [],
         borderColor: "rgb(255, 60, 60)",
         backgroundColor: "rgb(255, 60, 60)",
+        yAxisID: 'y1',
       },
       {
         label: 'LCP',
         data: [],
         borderColor: "rgb(33, 92, 255)",
         backgroundColor: "rgb(33, 92, 255)",
+        yAxisID: 'y2',
       }
     ]
   },
@@ -16219,6 +16226,39 @@ const graph = new Chart(document.getElementById('graph').getContext('2d'), {
     plugins: {
       legend: { display: true },
     },
+    scales: {
+      yAxes: [
+        {
+          id: 'y1',
+          type: 'linear',
+          position: 'left',
+          title: {
+            display: true,
+            text: 'RCP',
+          },
+          ticks: {
+            min: 0, // Dynamically set min
+            max: 100, // Dynamically set max
+          },
+        },
+        {
+          id: 'y2',
+          type: 'linear',
+          position: 'right',
+          title: {
+            display: true,
+            text: 'LCP',
+          },
+          ticks: {
+            min: 0, // Dynamically set min
+            max: 100, // Dynamically set max
+          },
+          grid: {
+            drawOnChartArea: false,
+          },
+        }
+      ]
+    }
   },
 });
 
@@ -16257,6 +16297,11 @@ document.getElementById("plot").addEventListener("click", function () {
             graph.data.datasets[0].data.push({x: groupedData[0].x, y: groupedData[0].y});
             graph.data.datasets[1].data.push({x: groupedData[1].x, y: groupedData[1].y});
           }
+          // Update the min and max for both y-axes dynamically
+          graph.options.scales.yAxes[0].ticks.min = Math.min(...graph.data.datasets[0].data.map(point => point.y));
+          graph.options.scales.yAxes[0].ticks.max = Math.max(...graph.data.datasets[0].data.map(point => point.y));
+          graph.options.scales.yAxes[1].ticks.min = Math.min(...graph.data.datasets[1].data.map(point => point.y));
+          graph.options.scales.yAxes[1].ticks.max = Math.max(...graph.data.datasets[1].data.map(point => point.y));
           graph.update();
 
       })
@@ -16278,6 +16323,28 @@ document.getElementById("savegraph").addEventListener("click", function () {
     link.click();
 });
 
+document.getElementById("changeBackground").addEventListener("click", function () {
+  const r = document.getElementById('r').value;
+  const g = document.getElementById('g').value;
+  const b = document.getElementById('b').value;
+  fetch('/bgcolor?r=' + encodeURIComponent(r) + '&g=' + encodeURIComponent(g) + '&b=' + encodeURIComponent(b))
+      .then(response => response.text())
+      .then(data => {
+      })
+      .catch(error => console.error('Error:', error));
+});
+
+document.getElementById("changeForeground").addEventListener("click", function () {
+  const r = document.getElementById('r').value;
+  const g = document.getElementById('g').value;
+  const b = document.getElementById('b').value;
+  fetch('/fgcolor?r=' + encodeURIComponent(r) + '&g=' + encodeURIComponent(g) + '&b=' + encodeURIComponent(b))
+      .then(response => response.text())
+      .then(data => {
+      })
+      .catch(error => console.error('Error:', error));
+});
+
 setInterval(function () {
     fetch('/sensor')
         .then(response => response.text())
@@ -16297,4 +16364,3 @@ document.getElementById("cleargraph").addEventListener("click", function () {
 </script>
 </body>
 </html>
-)rawLiteral";
