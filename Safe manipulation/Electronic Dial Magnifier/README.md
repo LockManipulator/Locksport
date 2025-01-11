@@ -18,7 +18,19 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 
 Turn the dial exactly to 0 and turn on the device. The encoder will automatically center on zero so don't touch the dial until the number 0 appears on the screen. The encoder can be used as is or you can connect to it's wifi for greater capabilities. Just connect to the wifi “Encoder”, no password, and go to 192.168.0.1 in a web browser. The web page is password protected with a username of “root” and password of “toor” (no quotes in either). The web page will also shows the current value on the encoder in case you didn't get a screen.
 
+
+
+## Bugs/Features
+
+
+
+- Lags on connecting to web page.
+
+
+
 - Graph is broken currently. Will fix soon.
+
+
 
 - Will add features to change color of text and background, font, etc.
 
@@ -172,3 +184,14 @@ The code for the encoder uses Rob Tillaart's AS5600 library https://github.com/R
 
 The code for the screen uses Adafruit's GC9A01A library https://github.com/adafruit/Adafruit_GC9A01A/tree/main
 
+
+
+Wifi libraries
+
+
+
+https://github.com/mathieucarbou/AsyncTCP
+
+
+
+https://github.com/mathieucarbou/ESPAsyncWebServer

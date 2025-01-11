@@ -20,6 +20,7 @@ const char* SendHTML = R"rawLiteral(
     <label for="rcontactpoint">Right contact point: </label><input type="text" id="rcontactpoint" name="contactpoint" size="5"><br>
     <label for="lcontactpoint">Left contact point: </label><input type="text" id="lcontactpoint" name="contactpoint" size="5"><br><br>
     <button id="plot">Plot</button><br><br>
+    <button id="cleargraph">Clear graph</button><br><br>
     <button id="savegraph">Save graph</button><br><br>
     <script>
 
@@ -16199,38 +16200,54 @@ return src;
 const graph = new Chart(document.getElementById('graph').getContext('2d'), {
   type: "scatter",
   data: {
-    datasets: [{
-      pointRadius: 3,
-      pointBackgroundColor: "rgb(255, 255, 255)",
-      data: []
-    },
-    {
-      pointRadius: 3,
-      pointBackgroundColor: "rgb(202, 202, 202)",
-      data: []
-    }]
+    datasets: [
+      {
+        label: "RCP",
+        pointRadius: 3,
+        pointBackgroundColor: "rgb(255, 255, 255)",
+        data: [],
+      },
+      {
+        label: "LCP",
+        pointRadius: 3,
+        pointBackgroundColor: "rgb(255, 255, 255)",
+        data: [],
+      }
+    ]
   },
   options: {
-    legend: {display: false},
+    plugins: {
+      legend: { display: false },
+    },
     scales: {
       x: {
         type: 'linear',
         position: 'bottom',
-        min: 0,
-        max: 98,
-      }
-    }
-  }
+        title: {
+          display: true,
+          text: 'X Axis',
+        },
+      },
+      y: {
+        type: 'linear',
+        position: 'left',
+        title: {
+          display: true,
+          text: 'RCP',
+        },
+      },
+    },
+  },
 });
 
 document.getElementById("plot").addEventListener("click", function () {
   const testing = document.getElementById('testing').value;
   const rcontactpoint = document.getElementById('rcontactpoint').value;
   const lcontactpoint = document.getElementById('lcontactpoint').value;
-  fetch('/plot?testing=' + encodeURIComponent(center) + '&rcontactpoint=' + encodeURIComponent(rcontactpoint) + '&rcontactpoint=')
+  fetch('/plot?testing=' + encodeURIComponent(testing) + '&rcontactpoint=' + encodeURIComponent(rcontactpoint) + '&lcontactpoint=' + encodeURIComponent(lcontactpoint))
       .then(response => response.text())
       .then(data => {
-          const parts = input.split(',').map(part => part.trim());
+          const parts = data.split(',').map(part => part.trim());
 
           if (parts.length == 3) {
             const direction = parts[0];
@@ -16246,7 +16263,7 @@ document.getElementById("plot").addEventListener("click", function () {
             }
           }
           else if (parts.length == 6) {
-            const groupedData = [];
+            const groupedData = []; 
             for (let i = 0; i < parts.length; i += 3) {
               const group = {
                 direction: parts[i],
@@ -16254,10 +16271,9 @@ document.getElementById("plot").addEventListener("click", function () {
                 y: parseFloat(parts[i + 2])
               };
               groupedData.push(group);
-            
-            graph.data.datasets[0].data.push({x: groupedData[1].x, y: groupedData[0].y});
-            graph.data.datasets[1].data.push({x: groupedData[1].x, y: groupedData[0].y});
             }
+            graph.data.datasets[0].data.push({x: groupedData[0].x, y: groupedData[0].y});
+            graph.data.datasets[1].data.push({x: groupedData[1].x, y: groupedData[1].y});
           }
           graph.update();
 
@@ -16288,7 +16304,12 @@ setInterval(function () {
             document.getElementById("position").innerText = dialNum;
         })
         .catch(error => console.error('Error:', error));
-}, 500);
+}, 50);
+
+document.getElementById("cleargraph").addEventListener("click", function () {
+  graph.data.datasets[0].data = [];
+  graph.data.datasets[1].data = [];
+});
 
 </script>
 </body>
