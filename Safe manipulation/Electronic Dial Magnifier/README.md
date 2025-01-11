@@ -33,7 +33,7 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 1. Slide the base onto the front of the safe
 2. Slide the encoder onto the metal rod and make sure it's centered on the dial before tightening the screw onto the rod.
 3. If there's not enough friction to spin the encoder then you may need to simply tape it onto the dial. It doesn't take much to get it spinning well with the dial. A tiny strip of double sided tape works best in my experience.
-4.Turn the dial exactly to 0 and turn on the device. The encoder will automatically center on zero so don't touch the dial until the number 0 appears on the screen. 
+4. Turn the dial exactly to 0 and turn on the device. The encoder will automatically center on zero so don't touch the dial until the number 0 appears on the screen. 
 
 
 The encoder can be used as is or you can connect to its wifi for greater capabilities. Just connect to the wifi “Encoder”, no password, and go to 192.168.0.1 in a web browser. The web page is password protected with a username of “root” and password of “toor” (no quotes in either).
