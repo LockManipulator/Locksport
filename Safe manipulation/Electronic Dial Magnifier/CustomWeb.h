@@ -16202,40 +16202,22 @@ const graph = new Chart(document.getElementById('graph').getContext('2d'), {
   data: {
     datasets: [
       {
-        label: "RCP",
-        pointRadius: 3,
-        pointBackgroundColor: "rgb(255, 255, 255)",
+        label: 'RCP',
         data: [],
+        borderColor: "rgb(255, 60, 60)",
+        backgroundColor: "rgb(255, 60, 60)",
       },
       {
-        label: "LCP",
-        pointRadius: 3,
-        pointBackgroundColor: "rgb(255, 255, 255)",
+        label: 'LCP',
         data: [],
+        borderColor: "rgb(33, 92, 255)",
+        backgroundColor: "rgb(33, 92, 255)",
       }
     ]
   },
   options: {
     plugins: {
-      legend: { display: false },
-    },
-    scales: {
-      x: {
-        type: 'linear',
-        position: 'bottom',
-        title: {
-          display: true,
-          text: 'X Axis',
-        },
-      },
-      y: {
-        type: 'linear',
-        position: 'left',
-        title: {
-          display: true,
-          text: 'RCP',
-        },
-      },
+      legend: { display: true },
     },
   },
 });
@@ -16285,7 +16267,7 @@ document.getElementById("savegraph").addEventListener("click", function () {
     // Get the chart instance
     
     // Generate Base64 image
-    const image = wheel1_chart.toBase64Image();
+    const image = graph.toBase64Image();
 
     // Create a temporary link element
     const link = document.createElement("a");
@@ -16309,6 +16291,7 @@ setInterval(function () {
 document.getElementById("cleargraph").addEventListener("click", function () {
   graph.data.datasets[0].data = [];
   graph.data.datasets[1].data = [];
+  graph.update();
 });
 
 </script>
