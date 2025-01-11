@@ -24,11 +24,7 @@ Turn the dial exactly to 0 and turn on the device. The encoder will automaticall
 
 
 
-- Lags on connecting to web page.
-
-
-
-- Graph is broken currently. Will fix soon.
+- Lags for a couple seconds on connecting to web page.
 
 
 
