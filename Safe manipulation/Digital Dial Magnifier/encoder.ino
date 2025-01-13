@@ -30,8 +30,8 @@ To do:
 
 #define TFT_MOSI 3  // SDA but really MOSI
 #define TFT_SCLK 2  // SCL but really SCLK
-#define TFT_CS 10   // CS Chip select control pin
-#define TFT_DC 11   // DC Data Command control pin
+#define TFT_DC 10   // DC Data Command control pin
+#define TFT_CS 11   // CS Chip select control pin
 #define TFT_RST 12  // RST Reset pin (could connect to Arduino RESET pin)
 
 // Screen variables
