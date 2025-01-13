@@ -138,8 +138,6 @@ SCL to esp pin 9
 
 ### Screen: 
 
-This is fucked. Wait until I fix or figure it out.
-
 VCC: Esp32 5v pin
 
 GND: Esp32 ground pin
