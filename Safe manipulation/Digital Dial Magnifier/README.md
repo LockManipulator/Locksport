@@ -128,7 +128,7 @@ OUT to esp pin 12
 
 GND to esp ground
 
-DIR to esp pin 5
+DIR to esp ground
 
 SDA to esp pin 8
 
