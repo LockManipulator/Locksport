@@ -23,6 +23,7 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 2. Multiple boot screen options.
 3. More face styles.
 4. Change and save all settings from web page.
+5. Better graph interface.
 
 
 
