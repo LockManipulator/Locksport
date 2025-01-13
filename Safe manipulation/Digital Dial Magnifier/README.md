@@ -124,7 +124,7 @@ One prong to battery '+' pad and the other prong to esp32 5v pin.
 
 VCC to esp 3v pin
 
-OUT to esp pin 12
+OUT to esp pin 5
 
 GND to esp ground
 
