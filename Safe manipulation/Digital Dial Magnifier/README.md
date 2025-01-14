@@ -20,7 +20,6 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 
 
 1. Better graph interface.
-2. Fix settings page not saving/loading.
 
 
 ## Use:
