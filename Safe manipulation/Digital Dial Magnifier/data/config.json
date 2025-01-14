@@ -1,0 +1,19 @@
+{
+  "screen_rotation": 2,
+  "text_size": 5,
+  "foreground_color": [255, 255, 255],
+  "background_color": [0, 0, 0],
+  "boot_image": "dial",
+  "boot_time": 2000,
+  "dial_border": true,
+  "border_thickness": 0.1,
+  "border_color": [255, 255, 255],
+  "show_pointer": true,
+  "pointer_size": 0.075,
+  "update_interval": 50,
+
+  "wifi_ssid": "Encoder",
+  "wifi_password": "",
+  "webpage_username": "root",
+  "webpage_password": "toor",
+}

@@ -1,0 +1,30 @@
+body {
+  color: #CACACA;
+  background-color: #2f2f2f;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+canvas {
+  width: 100%;
+  max-width: 800px;
+}

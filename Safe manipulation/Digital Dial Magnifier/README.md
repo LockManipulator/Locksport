@@ -1,6 +1,6 @@
 # Dial magnifier
 
-![alt text](https://github.com/LockManipulator/Locksport/blob/main/Safe%20manipulation/Digital%20Dial%20Magnifier/Images/encoder_safe_front.jpg?raw=true)
+![alt text](https://github.com/LockManipulator/Locksport/blob/main/Safe%20manipulation/Digital%20Dial%20Magnifier/Images/DDM-Front.jpg?raw=true)
 
 This is an encoder that sits on the dial of a safe lock to aid in manipulation. It can read down to 0.088 degrees (1/40th of an increment). 
 
@@ -19,25 +19,21 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 
 
 
-1. Use config file to save preferences across power-offs.
-2. Multiple boot screen options.
-3. More face styles.
-4. Change and save all settings from web page.
-5. Better graph interface.
-
+1. Better graph interface.
+2. Fix settings page not saving/loading.
 
 
 ## Use:
 
 
+1. Put a small piece of double sided tape where the magnifier touches the dial.
+2. Slide the magnetic base on to the front of the safe.
+3. Slide the main body onto the rod and make sure it's both centered over the dial and level before sticking it on.
+4. The encoder will automatically think it's on 0 so turn the dial to 0 before turning it on.
+5. You can tighten the screws onto the rod but I do find it's better to leave it loose to allow a bit of wiggle since you won't get the magnifier on perfect. This bit of wiggle won't affect your readings.
 
-1. Slide the base onto the front of the safe
-2. Slide the encoder onto the metal rod and make sure it's centered on the dial before tightening the screw onto the rod.
-3. If there's not enough friction to spin the encoder then you may need to simply tape it onto the dial. It doesn't take much to get it spinning well with the dial. A tiny strip of double sided tape works best in my experience.
-4. Turn the dial exactly to 0 and turn on the device. The encoder will automatically center on zero so don't touch the dial until the number 0 appears on the screen. 
 
-
-The encoder can be used as is or you can connect to its wifi for greater capabilities. Just connect to the wifi “Encoder”, no password, and go to 192.168.0.1 in a web browser. The web page is password protected with a username of “root” and password of “toor” (no quotes in either).
+The magnifier can be used as is or you can connect to its wifi for greater capabilities. Just connect to the wifi "DDM" with the password "magnifier" and go to 192.168.0.1 in a web browser.
 
 
 
@@ -61,7 +57,7 @@ The below links are simply the exact items I bought. It will most likely be chea
 
 
 
-1x (30.5mmx30mm) 1,000mah battery: https://a.co/d/a7W6ZNP  
+1x Battery (1,000mah, max 36mmx31mmx11mm) : https://a.co/d/a7W6ZNP  
 
 
 
@@ -69,7 +65,7 @@ The below links are simply the exact items I bought. It will most likely be chea
 
 
 
-1x On/off switch (18mmx12mmx10mm): https://a.co/d/1Zt4meo  
+1x On/off switch (18mmx12mmx6.25mm): https://a.co/d/1Zt4meo  
 
 
 
@@ -85,11 +81,11 @@ The below links are simply the exact items I bought. It will most likely be chea
 
 
 
-2x m3 heat insert: https://a.co/d/cIcD6mn  
+2x m3 heat insert (sized to fit in 5.2mm diameter hole): https://a.co/d/cIcD6mn
 
 
 
-7x m3 bolt (1x 10mm, 2x 20mm, 4x 6mm) and 1 m3 nut: https://a.co/d/1uQwlYJ  
+6x m3 bolt (2x >=15mm, 4x 6mm-10mm): https://a.co/d/1uQwlYJ  
 
 
 
@@ -100,7 +96,7 @@ Wires: You probably want red, black, and at least 4 other colors as well. I don'
 ## Wiring: 
 
 
-The wires for the screen and sensor will need to be run through the hole in the bottom of the gripper before soldering. And please test your on/off switch to make sure it's off before wiring it up. Mine is off when the button is clicked in and on when the button is out.
+Please test your on/off switch to make sure it's off before wiring it up. Mine is off when the button is clicked in and on when the button is out.
 
 
 
@@ -160,13 +156,13 @@ RST: to esp pin 12
 1. Insert the two m3 heat inserts into the gripper lid.
 2. Insert the magnet holder into the body and then insert the magnet (the magnet makes it hard to put in and out).
 3. Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down, wire side up) with the 4 6mm bolts. Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file a side of the pcb to fit.
-4. Solder wires to the screen then put it in the lid and snap the lid onto the body. Wires are more easily shortened than lengthened so longer is better. 
-5. Solder the headers onto the esp32 facing up. Clip the bottom flush and pull the plastic off. It's easier to pull the plastic off before you solder but it looks uglier. I broke each header off individually and pulled the plastic off before soldering.
-6. Put each part in it's respective cutout and then solder the connections. I would start with the short connections first so those wires can lay flatter.
-7. Screw the bar magnet into the bottom of the base and then insert the rod into the top.
-8. Snap the lid on and clamp the gripper onto the main encoder body, using the m3x10mm bolt and a nut.
+4. Solder the headers onto the esp32 facing up. Clip the bottom flush and clip the headers near the encoder so they don't stick up past the bolts holing the encoder down.
+5. Solder wires to the screen then put it in the body. The back should rest on the 4 bolts holding the encoder down. You'll have to cut down the corner of the button since it's in the way. I just used an xacto knife. There's only plastic there so no harm to the functionality of the button.
+6. Put each part in it's respective cutout and then solder the connections. I would start with the shorter connections first so those wires can lay flatter.
+7. Put the lid on. The tab on the flat end goes first then lower the rounded end down. 
+8. Screw the bar magnet into the bottom of the base and then insert the rod into the top.
 
-There's just enough space for a piece of thick double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose.
+Depending on what battery you got, there should be just enough space for a piece of thick double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose.
 
 ## Arduino IDE settings:
 

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encoder Settings Page</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Color Settings (RGB Values)</h1>
+    <label for="r">R: </label>
+    <input type="text" id="r" name="red" size="5" placeholder=""><br>
+    <label for="g">G: </label>
+    <input type="text" id="g" name="green" size="5" placeholder=""><br>
+    <label for="b">B: </label>
+    <input type="text" id="b" name="blue" size="5" placeholder=""><br>
+    <button id="changeBackground">Set Background Color</button>
+    <button id="changeForeground">Set Foreground Color</button>
+    <button id="changeBorder">Set Border Color</button><br><br>
+
+    <h1>Screen Settings</h1>
+    <label for="screen_rotation">Screen Rotation: </label>
+    <select id="screen_rotation" required name="screen_rotation" size="4">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </select><br>
+    <label for="text_size">Text Size: </label>
+    <input type="text" id="text_size" name="text_size" size="5" placeholder=""><br>
+    <label for="boot_image">Boot Image: </label>
+    <select id="boot_image" required name="boot_image">
+        <!-- Options will be dynamically populated -->
+    </select><br>
+    <label for="boot_time">Boot Time (milliseconds): </label>
+    <input type="text" id="boot_time" name="boot_time" size="5" placeholder=""><br>
+    <label for="dial_border">Dial Border: </label>
+    <select id="dial_border" required name="dial_border" size="2">
+        <option value="true">True</option>
+        <option value="false">False</option>
+    </select><br>
+    <label for="dial_border_thickness">Dial Border Thickness (decimal < 1): </label>
+    <input type="text" id="dial_border_thickness" name="dial_border_thickness" size="5" placeholder=""><br>
+    <label for="show_pointer">Show Dial Pointer: </label>
+    <select id="show_pointer" required name="show_pointer" size="2">
+        <option value="true">True</option>
+        <option value="false">False</option>
+    </select><br>
+    <label for="pointer_size">Dial Pointer Size (decimal < 1): </label>
+    <input type="text" id="pointer_size" name="pointer_size" size="5" placeholder=""><br>
+    <label for="update_interval">Update Interval (milliseconds): </label>
+    <input type="text" id="update_interval" name="update_interval" size="5" placeholder=""><br>
+
+    <h1>WiFi/Web Server Settings</h1>
+    <label for="ssid">WiFi Name: </label>
+    <input type="text" id="ssid" name="ssid" size="5" placeholder=""><br>
+    <label for="wifi_pass">WiFi Password: </label>
+    <input type="text" id="wifi_pass" name="wifi_pass" size="5" placeholder=""><br>
+    <label for="web_username">Webpage Username: </label>
+    <input type="text" id="web_username" name="web_username" size="5" placeholder=""><br>
+    <label for="web_password">Webpage Password: </label>
+    <input type="text" id="web_password" name="web_password" size="5" placeholder=""><br>
+
+    <button id="save">Save Settings</button>
+
+    <script src="/settings.js"></script>
+</body>
+</html>
