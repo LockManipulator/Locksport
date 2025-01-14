@@ -88,17 +88,23 @@ document.getElementById("plotrcp").addEventListener("click", function () {
       const existingPoint = gdata.find(point => point.x === testing);
 
       if (existingPoint) {
-        existingPoint.y = y;
+        existingPoint.y = rcontactpoint;
       } else {
         graph1.data.datasets[0].data.push({x: testing, y: rcontactpoint});
       }
 
       graph1.update();
 
-      const checkbox = document.querySelector('.switch input');
+      const checkbox1 = document.getElementById('advanceon');
+      const checkbox2 = document.getElementById('advanceby');
 
-      if (checkbox.checked) {
-        document.getElementById('testing').value = parseInt(document.getElementById('testing').value) + 2;
+      if (checkbox1.checked) {
+        if (checkbox2.checked) {
+          document.getElementById('testing').value = parseInt(document.getElementById('testing').value) + 2;
+        }
+        else {
+          document.getElementById('testing').value = parseInt(document.getElementById('testing').value) - 2;
+        }
       }
     });
 });
@@ -113,17 +119,23 @@ document.getElementById("plotlcp").addEventListener("click", function () {
       const existingPoint = gdata.find(point => point.x === testing);
 
       if (existingPoint) {
-        existingPoint.y = y;
+        existingPoint.y = lcontactpoint;
       } else {
         graph2.data.datasets[0].data.push({x: testing, y: lcontactpoint});
       }
 
       graph2.update();
 
-      const checkbox = document.querySelector('.switch input');
+      const checkbox1 = document.getElementById('advanceon');
+      const checkbox2 = document.getElementById('advanceby');
 
-      if (!checkbox.checked) {
-        document.getElementById('testing').value = parseInt(document.getElementById('testing').value) + 2;
+      if (!checkbox1.checked) {
+        if (checkbox2.checked) {
+          document.getElementById('testing').value = parseInt(document.getElementById('testing').value) + 2;
+        }
+        else {
+          document.getElementById('testing').value = parseInt(document.getElementById('testing').value) - 2;
+        }
       }
     });
 });
