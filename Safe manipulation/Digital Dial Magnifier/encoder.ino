@@ -86,9 +86,9 @@ String bootImage = "dial";              // Which boot screen to show. Look in bo
 int bootTime = 1000;                    // Amount of milliseconds to show the boot screen for. Default is 1000.
 bool drawBorder = true;                 // Whether or not to draw a border around the screen. Default is true.
 float borderThickness = 0.1;            // Thickness of the border in percentage of the radius of the screen. Default is 0.1.
-int borderColor[3] = {255, 255, 255}; // Color of the border. Default is [255, 255, 255] (white).
+int borderColor[3] = {255, 255, 255};   // Color of the border. Default is [255, 255, 255] (white).
 bool drawPointer = true;                // Whether or not to have a fancy animated pointer. Works with or without border and adjusts to inside the border if border is enabled. Default is true.
-int pointerSize = tftWidth * 0.075;     // Size of the pointer expressed as a percentage relative to screen radius.
+int pointerSize = 18;                   // Size of the pointer. Default is 18.
 int prev_x1 = 0;
 int prev_x2 = 0;
 int prev_y1 = 0;
@@ -167,6 +167,16 @@ void setup() {
   // Show help page
   server.on("/help", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send(LittleFS, "/help.html", "text/html");
+  });
+
+  // Show graph page
+  server.on("/graph.js", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(LittleFS, "/graph.js", "application/javascript");
+  });
+
+  // Show graph page
+  server.on("/graph", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(LittleFS, "/graph.html", "text/html");
   });
 
   // Show settings page
@@ -300,45 +310,6 @@ void setup() {
   // Sends the current dial position to the web page
   server.on("/sensor", HTTP_GET, [](AsyncWebServerRequest *request) {
     request->send_P(200, "text/text", String(sensorData).c_str());
-  });
-
-  // Graphs the data user inputs on the website
-  server.on("/plot", HTTP_GET, [](AsyncWebServerRequest *request) {
-    /*
-      Checks if both left and right contact points were entered or only one and graph accordingly.
-
-      Requests should look like "L, 34, 2.25" or "R, 34, 7.5, L, 34, 2.25".
-      Format: "{which contact point}, {number being tested}, {contact point}".
-      If there are both left and right contact points, put the right first.
-    */
-
-    String message = "";
-    String message1 = "";
-    String message2 = "";
-    String num = request->hasParam("testing") ? request->getParam("testing")->value() : "";
-    String rcontactpoint = request->hasParam("rcontactpoint") ? request->getParam("rcontactpoint")->value() : "";
-    String lcontactpoint = request->hasParam("lcontactpoint") ? request->getParam("lcontactpoint")->value() : "";
-
-    if (rcontactpoint != "") {
-      message1 += "R," + num + "," + rcontactpoint;
-    }
-
-    if (lcontactpoint != "") {
-      message2 += "L," + num + "," + lcontactpoint;
-    }
-
-    if (rcontactpoint != "" && lcontactpoint != "") {
-      message = message1 + "," + message2;
-    }
-    else {
-      if (rcontactpoint != "") {
-        message = message1;
-      }
-      else if (lcontactpoint != "") {
-        message = message1;
-      }
-    }
-    request->send_P(200, "text/text", message.c_str());
   });
 
   server.onNotFound(notFound);

@@ -22,7 +22,6 @@ document.getElementById("changeBorder").addEventListener("click", function () {
 document.getElementById("save").addEventListener("click", function () {
   const screen_rotation = document.getElementById("screen_rotation").value;
   const text_size = document.getElementById("text_size").value;
-  const boot_screen = document.getElementById("boot_screen").value;
   const boot_image = document.getElementById("boot_image").value;
   const boot_time = document.getElementById("boot_time").value;
   const dial_border = document.getElementById("dial_border").value;
@@ -34,7 +33,8 @@ document.getElementById("save").addEventListener("click", function () {
   const wifi_pass = document.getElementById("wifi_pass").value;
   const web_username = document.getElementById("web_username").value;
   const web_password = document.getElementById("web_password").value;
-  fetch(`/savesettings?screen_rotation=${screen_rotation}&text_size=${text_size}&boot_screen=${boot_screen}&boot_image=${boot_image}&boot_time=${boot_time}&dial_border=${dial_border}&dial_border_thickness=${dial_border_thickness}&show_pointer=${show_pointer}&pointer_size=${pointer_size}&update_interval=${update_interval}&ssid=${ssid}&wifi_pass=${wifi_pass}&web_username=${web_username}&web_password=${web_password}`);
+  fetch(`/savesettings?screen_rotation=${screen_rotation}&text_size=${text_size}&boot_image=${boot_image}&boot_time=${boot_time}&dial_border=${dial_border}&dial_border_thickness=${dial_border_thickness}&show_pointer=${show_pointer}&pointer_size=${pointer_size}&update_interval=${update_interval}&ssid=${ssid}&wifi_pass=${wifi_pass}&web_username=${web_username}&web_password=${web_password}`);
+  alert("Settings saved!");
 });
 
 // Function to fetch and update default options

@@ -19,7 +19,8 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 
 
 
-1. Better graph interface.
+1. Try to automatically detect contact point by feeling change in acceleration as the user spins past.
+2. Guided manipulation.
 
 
 ## Use:
@@ -32,7 +33,7 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 5. You can tighten the screws onto the rod but I do find it's better to leave it loose to allow a bit of wiggle since you won't get the magnifier on perfect. This bit of wiggle won't affect your readings.
 
 
-The magnifier can be used as is or you can connect to its wifi for greater capabilities. Just connect to the wifi "DDM" with the password "magnifier" and go to 192.168.0.1 in a web browser.
+The magnifier can be used as is or you can connect to its wifi for greater capabilities. Just connect to the wifi "DDM" with the password "magnifier" and go to 192.168.0.1 in a web browser. I don't have input sanitization yet so don't enter letters when it should be numbers and vice versa or it might crash.
 
 
 

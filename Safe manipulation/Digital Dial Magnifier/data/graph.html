@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encoder Home Page</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <canvas id="graph1" style="width:device-width; max-width:800px; height:200px;"></canvas><br>
+  <canvas id="graph2" style="width:device-width; max-width:800px; height:200px;"></canvas><br><br>
+  <label for="testing">Number</label><br>
+  <button id="downnumber">-2</button><input type="text" id="testing" name="contactpoint" size="5" value="0"><button id="upnumber">+2</button><br><br>
+  Advance on RCP<label class="switch"><input type="checkbox" checked><span class="slider round"></span></label><br><br>
+  <button id="plotrcp" class="button">Plot RCP</button>    <button id="plotlcp" class="button">Plot LCP</button><br><br><br>
+  <button id="savegraph1" class="button">Save RCP graph</button>    <button id="savegraph2" class="button">Save LCP graph</button><br><br>
+  <button id="cleargraphs" class="button">Clear graphs</button><br><br>
+
+  <script src="/chart.js"></script>
+  <script src="/graph.js"></script>
+</body>
+</html>
