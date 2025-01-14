@@ -77,7 +77,7 @@ int tftWidth = tft.width();
 int tftHeight = tft.height();
 int prevX = tftWidth / 2;               // Used to draw over text instead of updating entire screen.
 int prevY = tftHeight / 2;              // Used to draw over text instead of updating entire screen.
-int rotation = 2;                       // Default screen rotation is 2. Makes the protrusion from the screen point up.
+int rotation = 1;                       // Default screen rotation is 1. Makes the protrusion from the screen point up.
 int textSize = 5;                       // Default text size is 5.
 int background[3] = {0, 0, 0};          // Background. Default is [0, 0, 0] (black).
 int foreground[3] = {255, 255, 255};    // Text. Default is [255, 255, 255] (white).
@@ -176,6 +176,19 @@ void setup() {
 
   // Show settings page
   server.on("/savesettings", HTTP_GET, [](AsyncWebServerRequest *request) {
+    rotation = request->getParam("screen_rotation")->value().toInt();
+    textSize = request->getParam("text_size")->value().toInt();
+    bootImage = request->getParam("boot_image")->value();
+    bootTime = request->getParam("boot_time")->value().toInt();
+    drawBorder = request->getParam("dial_border")->value();
+    borderThickness = request->getParam("dial_border_thickness")->value().toFloat();
+    drawPointer = request->getParam("show_pointer")->value();
+    pointerSize = request->getParam("pointer_size")->value().toFloat();
+    updateInterval = request->getParam("update_interval")->value().toInt();
+    ssidap = request->getParam("ssid")->value().c_str();
+    passwordap = request->getParam("wifi_pass")->value().c_str();
+    loginname = request->getParam("web_username")->value();
+    loginpassword = request->getParam("web_password")->value();
 
     save_settings();
 
