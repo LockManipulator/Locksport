@@ -2,7 +2,9 @@
 
 ![alt text](https://github.com/LockManipulator/Locksport/blob/main/Safe%20manipulation/Digital%20Dial%20Magnifier/Images/DDM-Front.jpg?raw=true)
 
-This is an encoder that sits on the dial of a safe lock to aid in manipulation. It can read down to 0.088 degrees (1/40th of an increment). 
+This is an encoder that sits on the dial of a safe lock to aid in manipulation. It can read down to 0.088 degrees (1/40th of an increment). The screen colors can be customized as well as if you want a border or animated pointer to show. It also has wifi you can connect to for automated graphing. Just connect to the wifi "DDM" with the password "magnifier" and go to 192.168.0.1 in a web browser. NOTE: I don't have input sanitization yet so don't enter letters when it should be numbers and vice versa or it might crash.
+
+![alt text](https://github.com/LockManipulator/Locksport/blob/main/Safe%20manipulation/Digital%20Dial%20Magnifier/Images/DDM-WebGraph.jpg?raw=true)
 
 ## Features:
 
@@ -20,8 +22,9 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 
 1. Better dial-body interface. Currently a bit too finnicky for my liking to get on straight.
 2. Better button size and shape so you don't have to cut a corner off it.
-3. Try to automatically detect contact point by feeling change in acceleration as the user spins past.
-4. Guided manipulation.
+3. Input sanitization.
+4. Try to automatically detect contact point by feeling change in acceleration as the user spins past.
+5. Guided manipulation.
 
 
 ## Use:
@@ -32,10 +35,6 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 3. Slide the main body onto the rod and make sure it's both centered over the dial and level before sticking it on. I check to make sure the base is the right distance away then look at the angle of the magnifier on the rod to get it centered.
 4. Make sure the body is level before you tighten the screws onto the rod. The design is supposed to allow for a bit of rotation on the rod to account for it not being centered on the dial perfectly. This is ok if you see some wiggle. The screws are there to keep the body level although aren't 100% necessary.
 5. The magnifier will automatically think it's on 0 so turn the dial to 0 before turning it on.
-
-
-The magnifier can be used as is or you can connect to its wifi for greater capabilities. Just connect to the wifi "DDM" with the password "magnifier" and go to 192.168.0.1 in a web browser. I don't have input sanitization yet so don't enter letters when it should be numbers and vice versa or it might crash.
-
 
 
 
