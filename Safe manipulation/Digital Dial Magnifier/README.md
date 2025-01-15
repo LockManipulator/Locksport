@@ -27,11 +27,11 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 ## Use:
 
 
-1. Put a small piece of double sided tape where the magnifier touches the dial.
+1. Put a small piece of double sided tape in the middle of the dial.
 2. Slide the magnetic base on to the front of the safe.
-3. Slide the main body onto the rod and make sure it's both centered over the dial and level before sticking it on.
-4. The encoder will automatically think it's on 0 so turn the dial to 0 before turning it on.
-5. You can tighten the screws onto the rod but I do find it's better to leave it loose to allow a bit of wiggle since you won't get the magnifier on perfect. This bit of wiggle won't affect your readings.
+3. Slide the main body onto the rod and make sure it's both centered over the dial and level before sticking it on. I check to make sure the base is the right distance away then look at the angle of the magnifier on the rod to get it centered.
+4. Make sure the body is level before you tighten the screws onto the rod. The design is supposed to allow for a bit of rotation on the rod to account for it not being centered on the dial perfectly. This is ok if you see some wiggle. The screws are there to keep the body level although aren't 100% necessary.
+5. The magnifier will automatically think it's on 0 so turn the dial to 0 before turning it on.
 
 
 The magnifier can be used as is or you can connect to its wifi for greater capabilities. Just connect to the wifi "DDM" with the password "magnifier" and go to 192.168.0.1 in a web browser. I don't have input sanitization yet so don't enter letters when it should be numbers and vice versa or it might crash.
