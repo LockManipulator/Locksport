@@ -19,8 +19,9 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 
 
 1. Better dial-body interface. Currently a bit too finnicky for my liking to get on straight.
-2. Try to automatically detect contact point by feeling change in acceleration as the user spins past.
-3. Guided manipulation.
+2. Better button size and shape so you don't have to cut a corner off it.
+3. Try to automatically detect contact point by feeling change in acceleration as the user spins past.
+4. Guided manipulation.
 
 
 ## Use:
