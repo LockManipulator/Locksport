@@ -190,7 +190,7 @@ If you're using Arduino IDE above version 1.8 (99.9% you are if you use Arduino 
 
 
 
-1. Make sure your arduino sketch project folder has a folder called 'data' with the index.html file in it. The 'data' folder should be in the same directory as encoder.ino.
+1. Make sure your arduino sketch project folder has a folder called 'data' with the web page files in it. The 'data' folder should be in the same directory as encoder.ino.
 2. Download the latest .vsix file from https://github.com/earlephilhower/arduino-littlefs-upload/releases (where these instructions come from).
 3. Put it in ~/.arduinoIDE/plugins/ on Mac and Linux or C:\Users\<username>\.arduinoIDE\plugins\ on Windows (you may need to make this directory yourself beforehand)
 4. Restart the IDE.
