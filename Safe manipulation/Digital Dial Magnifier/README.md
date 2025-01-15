@@ -4,7 +4,7 @@
 
 This is an encoder that sits on the dial of a safe lock to aid in manipulation. It can read down to 0.088 degrees (1/40th of an increment). The screen colors can be customized as well as if you want a border or animated pointer to show. It also has wifi you can connect to for automated graphing. Just connect to the wifi "DDM" with the password "magnifier" and go to 192.168.0.1 in a web browser. NOTE: I don't have input sanitization yet so don't enter letters when it should be numbers and vice versa or it might crash.
 
-![alt text](https://github.com/LockManipulator/Locksport/blob/main/Safe%20manipulation/Digital%20Dial%20Magnifier/Images/DDM-WebGraph.jpg?raw=true | height=400)
+![alt text](https://github.com/LockManipulator/Locksport/blob/main/Safe%20manipulation/Digital%20Dial%20Magnifier/Images/DDM-WebGraph.jpg?raw=true | width=400)
 
 ## Features:
 
