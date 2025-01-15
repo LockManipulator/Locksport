@@ -46,7 +46,7 @@ The below links are simply the exact items I bought. It will most likely be chea
 
 
 
-1 of each print file
+1 of each print file (I print in PETG) except print 4x Encoder-CouplerMiddle in TPU
 
 
 
@@ -155,7 +155,7 @@ RST: to esp pin 12
 
 
 1. Insert the two m3 heat inserts into the gripper lid.
-2. Insert the magnet holder into the body and then insert the magnet (the magnet makes it hard to put in and out).
+2. Glue the 3 coupler parts together and insert into the body before putting the magnet in (the magnet makes it hard to put in and out).
 3. Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down, wire side up) with the 4 6mm bolts. Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file a side of the pcb to fit.
 4. Solder the headers onto the esp32 facing up. Clip the bottom flush and clip the headers near the encoder so they don't stick up past the bolts holing the encoder down.
 5. Solder wires to the screen then put it in the body. The back should rest on the 4 bolts holding the encoder down. You'll have to cut down the corner of the button since it's in the way. I just used an xacto knife. There's only plastic there so no harm to the functionality of the button.
