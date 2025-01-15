@@ -70,11 +70,19 @@ const graph2 = new Chart(document.getElementById("graph2").getContext("2d"), {
   }
 });
 
-document.getElementById("upnumber").addEventListener("click", function () {
+document.getElementById("up1number").addEventListener("click", function () {
+  document.getElementById('testing').value = parseInt(document.getElementById('testing').value) + 1;
+});
+
+document.getElementById("down1number").addEventListener("click", function () {
+  document.getElementById('testing').value = parseInt(document.getElementById('testing').value) - 1;
+});
+
+document.getElementById("up2number").addEventListener("click", function () {
   document.getElementById('testing').value = parseInt(document.getElementById('testing').value) + 2;
 });
 
-document.getElementById("downnumber").addEventListener("click", function () {
+document.getElementById("down2number").addEventListener("click", function () {
   document.getElementById('testing').value = parseInt(document.getElementById('testing').value) - 2;
 });
 
