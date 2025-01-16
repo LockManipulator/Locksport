@@ -24,7 +24,7 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 3. Guided manipulation.
 
 
-## Use:
+## Use
 
 
 1. Put a small piece of double sided tape in the middle of the dial.
@@ -33,6 +33,12 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 4. Make sure the body is level before you tighten the screws onto the rod. The design is supposed to allow for a bit of rotation on the rod to account for it not being centered on the dial perfectly. This is ok if you see some wiggle. The screws are there to keep the body level although aren't 100% necessary.
 5. The magnifier will automatically think it's on 0 so turn the dial to 0 before turning it on.
 
+
+## Tips and troubleshooting
+
+The magnifier must be as centered as possible and the body must be level. I noticed that if I mess up on this, the double sided tape holding the magnifier on will curl up and push the magnifier off. The coupler between the magnet and dial has just enough bend and clearance in the body to allow for some slop without affecting the accuracy.
+
+I've noticed on some locks, the front of dial is just a plastic cover which may be loose. This will lead to error depending on which direction you are turning. Also, there can be a piece of plastic on the inside edge of the dial ring between the dial and dial ring. This has the opening index on it and will give errors in reading/dialing if it's loose.
 
 
 ## BOM: 
