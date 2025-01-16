@@ -2,7 +2,7 @@
 
 ![alt text](https://github.com/LockManipulator/Locksport/blob/main/Safe%20manipulation/Digital%20Dial%20Magnifier/Images/DDM-Front.jpg?raw=true)
 
-This is an encoder that sits on the dial of a safe lock to aid in manipulation. It can read down to 0.088 degrees (1/40th of an increment). The screen colors can be customized as well as if you want a border or animated pointer to show. It also has wifi you can connect to for automated graphing. Just connect to the wifi "DDM" with the password "magnifier" and go to 192.168.0.1 in a web browser. NOTE: I don't have input sanitization yet so don't enter letters when it should be numbers and vice versa or it might crash.
+This is an encoder that sits on the dial of a safe lock to aid in manipulation. It can read down to 0.088 degrees (1/40th of an increment). Although you'll generally get 1/10 of an increment from play in the dial, dial ring, build tolerances, etc. The screen colors can be customized as well as if you want a border or animated pointer to show. It also has wifi you can connect to for automated graphing. Just connect to the wifi "DDM" with the password "magnifier" and go to 192.168.0.1 in a web browser. NOTE: I don't have input sanitization yet so don't enter letters when it should be numbers and vice versa or it might crash.
 
 <img src="https://github.com/LockManipulator/Locksport/blob/main/Safe%20manipulation/Digital%20Dial%20Magnifier/Images/DDM-WebGraph.jpg?raw=true" width="400">
 
@@ -19,12 +19,9 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 
 ## To do
 
-
-1. Better dial-body interface. Currently a bit too finnicky for my liking to get on straight.
-2. Better button size and shape so you don't have to cut a corner off it.
-3. Input sanitization.
-4. Try to automatically detect contact point by feeling change in acceleration as the user spins past.
-5. Guided manipulation.
+1. Input sanitization.
+2. Try to automatically detect contact point by feeling change in acceleration as the user spins past.
+3. Guided manipulation.
 
 
 ## Use:
@@ -65,7 +62,7 @@ The below links are simply the exact items I bought. It will most likely be chea
 
 
 
-1x On/off switch (18mmx12mmx6.25mm): https://a.co/d/1Zt4meo  
+1x On/off switch (12mmx8mmx8mm): https://a.co/d/0qDNLT6
 
 
 
@@ -154,13 +151,14 @@ RST: to esp pin 12
 
 
 1. Insert the two m3 heat inserts into the gripper lid.
-2. Glue the 3 coupler parts together and insert into the body before putting the magnet in (the magnet makes it hard to put in and out).
-3. Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down, wire side up) with the 4 6mm bolts. Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file a side of the pcb to fit.
-4. Solder the headers onto the esp32 facing up. Clip the bottom flush and clip the headers near the encoder so they don't stick up past the bolts holing the encoder down.
-5. Solder wires to the screen then put it in the body. The back should rest on the 4 bolts holding the encoder down. You'll have to cut down the corner of the button since it's in the way. I just used an xacto knife. There's only plastic there so no harm to the functionality of the button.
-6. Put each part in it's respective cutout and then solder the connections. I would start with the shorter connections first so those wires can lay flatter.
-7. Put the lid on. The tab on the flat end goes first then lower the rounded end down. 
-8. Screw the bar magnet into the bottom of the base and then insert the rod into the top.
+2. Solder one wire to each leg of the button and press it into place.
+3. Glue the 3 coupler parts together and insert into the body before putting the magnet in (the magnet makes it hard to put in and out).
+4. Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down, wire side up) with the 4 6mm bolts. Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file a side of the pcb to fit.
+5. Solder the headers onto the esp32 facing up. Clip the bottom flush and clip the headers near the encoder so they don't stick up past the bolts holing the encoder down.
+6. Solder wires to the screen then put it in the body. The back should rest on the 4 bolts holding the encoder down.
+7. Put each part in it's respective cutout and then solder the connections. I would start with the shorter connections first so those wires can lay flatter.
+8. Put the lid on. The tab on the flat end goes first then lower the rounded end down. 
+9. Screw the bar magnet into the bottom of the base and then insert the rod into the top.
 
 Depending on what battery you got, there should be just enough space for a piece of thick double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose.
 
