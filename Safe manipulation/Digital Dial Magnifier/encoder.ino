@@ -184,6 +184,12 @@ void setup() {
     request->send(LittleFS, "/settings.html", "text/html");
   });
 
+  // Reset encoder baseline
+  server.on("/reset", HTTP_GET, [](AsyncWebServerRequest *request) {
+    baseLine = as5600.rawAngle(); // Zero out our encoder
+    request->send_P(200, "text/text", "true");
+  });
+
   // Show settings page
   server.on("/savesettings", HTTP_GET, [](AsyncWebServerRequest *request) {
     rotation = request->getParam("screen_rotation")->value().toInt();
