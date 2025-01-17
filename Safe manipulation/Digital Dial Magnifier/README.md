@@ -156,7 +156,7 @@ RST: to esp pin 12
 ## Assembly guide:
 
 
-1. Insert the two m3 heat inserts into the gripper lid.
+1. Insert the two m3 heat inserts into the gripper lid from inside the rod hole.
 2. Solder one wire to each leg of the button and press it into place.
 3. Glue the 3 coupler parts together and insert into the body before putting the magnet in (the magnet makes it hard to put in and out).
 4. Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down, wire side up) with the 4 6mm bolts. Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file a side of the pcb to fit.
