@@ -46,11 +46,7 @@ On macOS, press [⌘] + [Shift] + [P] to open the Command Palette in the Arduino
 
 To do:
 -----
-1. Better web and graphing interface.
-
-Current
--------
-Fix saving and loading settings
+Guided manipulation
 */
 
 #include "AS5600.h"
@@ -77,37 +73,40 @@ int tftWidth = tft.width();
 int tftHeight = tft.height();
 int prevX = tftWidth / 2;               // Used to draw over text instead of updating entire screen.
 int prevY = tftHeight / 2;              // Used to draw over text instead of updating entire screen.
-int rotation = 1;                       // Default screen rotation is 1. Makes the protrusion from the screen point up.
+int rotation = 1;                       // Default screen rotation is 1 (for if the magnifier sticks out from the dial to the left).
 int textSize = 5;                       // Default text size is 5.
+int prevTextSize = 5;                   // For erasing old text.
+bool updateText = true;                 // Whether the text needs to be updated or not. Default is true.
 int background[3] = {0, 0, 0};          // Background. Default is [0, 0, 0] (black).
 int foreground[3] = {255, 255, 255};    // Text. Default is [255, 255, 255] (white).
 const char* bootImages[] = {"none", "dial"};    // Currently available boot images.
-String bootImage = "dial";              // Which boot screen to show. Look in boot_display() for more info. Default is "dial".
+String bootImage = "dial";              // Which boot screen to show. Look in bootDisplay() for more info. Default is "dial".
 int bootTime = 1000;                    // Amount of milliseconds to show the boot screen for. Default is 1000.
 bool drawBorder = true;                 // Whether or not to draw a border around the screen. Default is true.
 float borderThickness = 0.1;            // Thickness of the border in percentage of the radius of the screen. Default is 0.1.
 int borderColor[3] = {255, 255, 255};   // Color of the border. Default is [255, 255, 255] (white).
 bool drawPointer = true;                // Whether or not to have a fancy animated pointer. Works with or without border and adjusts to inside the border if border is enabled. Default is true.
 int pointerSize = 18;                   // Size of the pointer. Default is 18.
-int prev_x1 = 0;
-int prev_x2 = 0;
-int prev_y1 = 0;
-int prev_y2 = 0;
+int prev_x1 = 0;                        // For erasing previous pointer if enabled.
+int prev_x2 = 0;                        // For erasing previous pointer if enabled.
+int prev_y1 = 0;                        // For erasing previous pointer if enabled.
+int prev_y2 = 0;                        // For erasing previous pointer if enabled.
+bool modeChanged = false;               // Bandaid for screen artifacts.
 
 // Encoder variabes
-AS5600 as5600;              // Use default Wire
-int dirPin = 5;             // Change this if you didn't use pin 5 to encoder DIR
-int updateInterval = 50;    // How many milliseconds in-between encoder reading
-int baseLine = 0;           // To zero our encoder
-float sensorData = 0;       // The variable the encoder position gets stored in
-float prev_sensorData = 0;  // Used to check if there's a change so we don't needlessly redraw the screen
+AS5600 as5600;                // Use default Wire.
+int dirPin = 5;               // Change this if you didn't use pin 5 to encoder DIR.
+int updateInterval = 50;      // How many milliseconds in-between encoder reading.
+int baseLine = 0;             // To zero our encoder.
+float sensorData = 0;         // The variable the encoder position gets stored in.
+float prev_sensorData = 0;    // Used for calculations.
 
-//Access point handling
-const char *ssidap = "DDM";      // Can set custom access point name here
-const char *passwordap = "magnifier";         // Can set custom access point password here
-String loginname = "";           // Web page login page username
-String loginpassword = "";       // Web page login page password
-IPAddress local_ip(192, 168, 0, 1);  // Go to 192.168.0.1 in a browser to control device
+// Access point handling
+const char *ssidap = "DDM";           // Can set custom access point name here.
+const char *passwordap = "magnifier"; // Can set custom access point password here.
+String loginname = "";                // Web page login page username.
+String loginpassword = "";            // Web page login page password (both needed if setting just one).
+IPAddress local_ip(192, 168, 0, 1);   // Go to 192.168.0.1 in a browser to control device.
 IPAddress gateway(192, 168, 0, 1);
 IPAddress subnet(255, 255, 255, 0);
 String header;
@@ -196,25 +195,14 @@ void setup() {
     textSize = request->getParam("text_size")->value().toInt();
     bootImage = request->getParam("boot_image")->value();
     bootTime = request->getParam("boot_time")->value().toInt();
-    drawBorder = request->getParam("dial_border")->value();
+    drawBorder = request->getParam("dial_border")->value() == "true";
     borderThickness = request->getParam("dial_border_thickness")->value().toFloat();
-    drawPointer = request->getParam("show_pointer")->value();
+    drawPointer = request->getParam("show_pointer")->value() == "true";
     pointerSize = request->getParam("pointer_size")->value().toFloat();
     updateInterval = request->getParam("update_interval")->value().toInt();
-    ssidap = request->getParam("ssid")->value().c_str();
-    passwordap = request->getParam("wifi_pass")->value().c_str();
-    loginname = request->getParam("web_username")->value();
-    loginpassword = request->getParam("web_password")->value();
 
     save_settings();
-
-    // Draw border around screen if enabled
-    if (drawBorder) {
-      tft.fillScreen(toColor(background));
-      tft.fillCircle(tftWidth / 2, tftHeight / 2, tftWidth / 2, toColor(borderColor));
-      tft.fillCircle(tftWidth / 2, tftHeight / 2, int((tftWidth / 2) * (1 - borderThickness)), toColor(background));
-    }
-    update_display();
+    modeChanged = true;
     request->send_P(200, "text/text", "true");
   });
 
@@ -231,10 +219,6 @@ void setup() {
     doc["border_thickness"] = borderThickness;
     doc["show_pointer"] = drawPointer;
     doc["pointer_size"] = pointerSize;
-    doc["wifi_ssid"] = ssidap;
-    doc["wifi_password"] = passwordap;
-    doc["webpage_username"] = loginname;
-    doc["webpage_password"] = loginpassword;
     doc["update_interval"] = updateInterval;
 
     // Send the JSON response to the client
@@ -269,15 +253,7 @@ void setup() {
     background[0] = request->getParam("r")->value().toInt();
     background[1] = request->getParam("g")->value().toInt();
     background[2] = request->getParam("b")->value().toInt();
-    save_settings();
-
-    // Draw border around screen if enabled
-    if (drawBorder) {
-      tft.fillScreen(toColor(background));
-      tft.fillCircle(tftWidth / 2, tftHeight / 2, tftWidth / 2, toColor(borderColor));
-      tft.fillCircle(tftWidth / 2, tftHeight / 2, int((tftWidth / 2) * (1 - borderThickness)), toColor(background));
-    }
-    update_display();
+    modeChanged = true;
     request->send_P(200, "text/text", "true");
   });
 
@@ -285,15 +261,7 @@ void setup() {
     foreground[0] = request->getParam("r")->value().toInt();
     foreground[1] = request->getParam("g")->value().toInt();
     foreground[2] = request->getParam("b")->value().toInt();
-    save_settings();
-
-    // Draw border around screen if enabled
-    if (drawBorder) {
-      tft.fillScreen(toColor(background));
-      tft.fillCircle(tftWidth / 2, tftHeight / 2, tftWidth / 2, toColor(borderColor));
-      tft.fillCircle(tftWidth / 2, tftHeight / 2, int((tftWidth / 2) * (1 - borderThickness)), toColor(background));
-    }
-    update_display();
+    modeChanged = true;
     request->send_P(200, "text/text", "true");
   });
 
@@ -301,15 +269,7 @@ void setup() {
     borderColor[0] = request->getParam("r")->value().toInt();
     borderColor[1] = request->getParam("g")->value().toInt();
     borderColor[2] = request->getParam("b")->value().toInt();
-    save_settings();
-
-    // Draw border around screen if enabled
-    if (drawBorder) {
-      tft.fillScreen(toColor(background));
-      tft.fillCircle(tftWidth / 2, tftHeight / 2, tftWidth / 2, toColor(borderColor));
-      tft.fillCircle(tftWidth / 2, tftHeight / 2, int((tftWidth / 2) * (1 - borderThickness)), toColor(background));
-    }
-    update_display();
+    modeChanged = true;
     request->send_P(200, "text/text", "true");
   });
 
@@ -321,22 +281,11 @@ void setup() {
   server.onNotFound(notFound);
   server.begin();
 
-  update_display(); // This is needed to ensure no artifacting
-
   // The esp turns on pretty fast so the movement of releasing the on button causes the screen to start just slightly off of 0 occasionally.
   // This is both a cool artificial boot screen and a delay before zero'ing the dial to ensure no unwanted movement.
-  if (bootImage != "none") {
-    boot_display();
-  }
-
-  // Draw border around screen if enabled
-  if (drawBorder) {
-    tft.fillScreen(toColor(background));
-    tft.fillCircle(tftWidth / 2, tftHeight / 2, tftWidth / 2, toColor(borderColor));
-    tft.fillCircle(tftWidth / 2, tftHeight / 2, int((tftWidth / 2) * (1 - borderThickness)), toColor(background));
-  }
+  bootDisplay();
   baseLine = as5600.rawAngle(); // Zero out our encoder
-  update_display();
+  modeChanged = true;
 }
 
 void loop() {
@@ -345,10 +294,105 @@ void loop() {
   if (millis() - lastTime >= updateInterval) {
     lastTime = millis();
     sensorData = getInc();
-    if (sensorData != prev_sensorData) {
-      update_display();
+    if (sensorData != prev_sensorData || modeChanged) {
+      updateDisplay();
     }
+  }  
+}
+
+// Handles updating the display during normal operations
+void updateDisplay() { 
+  String screenText = String(sensorData);
+  tft.setTextSize(textSize);
+
+  if (modeChanged) {
+    drawScreenBorder();
+    modeChanged = false;
   }
+  else {
+    tft.fillCircle(tftWidth / 2, tftHeight / 2, int((tftWidth / 2) * (1 - borderThickness)), toColor(background));
+  }
+
+  // Calculate text boundaries
+  int16_t textX, textY;
+  uint16_t textWidth, textHeight;
+
+  // Measure the bounding box of the text
+  tft.getTextBounds(screenText, 0, 0, &textX, &textY, &textWidth, &textHeight);
+
+  // Calculate position to center the text
+  int16_t x = (tftWidth - textWidth) / 2;
+  // Adjust y-coordinate for baseline alignment
+  int16_t y = tftHeight / 2 - textHeight / 2;
+
+  // Set text properties and draw
+  tft.setTextColor(toColor(foreground));
+  tft.setCursor(x, y); // y is now adjusted
+  tft.println(screenText);
+
+  // Draw pointer
+  if (drawPointer) {
+    showPointer();
+  }
+  prev_sensorData = sensorData;
+}
+
+void showPointer() {
+  // Erase previous pointer
+  float angle = ((100 - prev_sensorData) * 3.6) - 90; // Make sure 0 is at the top of the screen and we're following 0 with the pointer
+
+  // Convert angle to radians
+  float angleRad = radians(angle);
+  
+  int startX = (tftWidth / 2) + (((tftWidth / 2)) * cos(angleRad));
+  int startY = (tftHeight / 2) + (((tftHeight / 2)) * sin(angleRad));
+
+  // Calculate the starting point (18 pixels away from the center along the angle)
+  if (drawBorder) {
+    startX = (tftWidth / 2) + (((tftWidth / 2) * (1 - borderThickness)) * cos(angleRad));
+    startY = (tftHeight / 2) + (((tftHeight / 2) * (1 - borderThickness)) * sin(angleRad));
+  }
+
+  // Calculate the other two points of the isosceles triangle
+  // The acute angle will be split symmetrically on either side
+  float halfAngle = radians(45 / 2); // Half the acute angle to split it evenly
+  
+  // Draw the isosceles triangle
+  tft.fillTriangle(startX, startY, prev_x1, prev_y1, prev_x2, prev_y2, toColor(background));
+
+  // Draw moving pointer
+  angle = ((100 - sensorData) * 3.6) - 90; // Make sure 0 is at the top of the screen and we're following 0 with the pointer
+  
+  // Convert angle to radians
+  angleRad = radians(angle);
+  
+  startX = (tftWidth / 2) + (((tftWidth / 2)) * cos(angleRad));
+  startY = (tftHeight / 2) + (((tftHeight / 2)) * sin(angleRad));
+
+  // Calculate the starting point (18 pixels away from the center along the angle)
+  if (drawBorder) {
+    startX = (tftWidth / 2) + (((tftWidth / 2) * (1 - borderThickness)) * cos(angleRad));
+    startY = (tftHeight / 2) + (((tftHeight / 2) * (1 - borderThickness)) * sin(angleRad));
+  }
+  
+  // Calculate the other two points of the isosceles triangle
+  // The acute angle will be split symmetrically on either side
+  halfAngle = radians(45 / 2); // Half the acute angle to split it evenly
+
+  // Calculate the two other points based on the isosceles property
+  int x1 = startX - pointerSize * cos(angleRad - halfAngle);
+  int y1 = startY - pointerSize * sin(angleRad - halfAngle);
+  
+  int x2 = startX - pointerSize * cos(angleRad + halfAngle);
+  int y2 = startY - pointerSize * sin(angleRad + halfAngle);
+
+  prev_x1 = x1;
+  prev_x2 = x2;
+  prev_y1 = y1;
+  prev_y2 = y2;
+  
+  // Draw the isosceles triangle
+  tft.fillTriangle(startX, startY, x1, y1, x2, y2, toColor(borderColor));
 }
 
 uint16_t toColor(int color[]) {
@@ -358,14 +402,14 @@ uint16_t toColor(int color[]) {
 void load_settings() {
   File file = LittleFS.open("/config.json", "r");
   if (!file) {
-    Serial.println("Failed to open file for reading");
+    save_settings();
     return;
   }
 
   StaticJsonDocument<512> doc;
   DeserializationError error = deserializeJson(doc, file);
   if (error) {
-    Serial.println("Failed to parse JSON");
+    Serial.println("Failed to parse settings to load!");
     file.close();
     return;
   }
@@ -400,10 +444,6 @@ void load_settings() {
 
   drawPointer = doc["show_pointer"];
   pointerSize = doc["pointer_size"];
-  ssidap = doc["wifi_ssid"].as<String>().c_str();
-  passwordap = doc["wifi_password"].as<String>().c_str();
-  loginname = doc["webpage_username"].as<String>();
-  loginpassword = doc["webpage_password"].as<String>();
   updateInterval = doc["update_interval"];
 
   file.close();
@@ -412,7 +452,7 @@ void load_settings() {
 void save_settings() {
   File file = LittleFS.open("/config.json", "w");
   if (!file) {
-    Serial.println("Failed to open file for writing");
+    Serial.println("Failed to open file for saving!");
     return;
   }
 
@@ -444,40 +484,47 @@ void save_settings() {
 
   doc["show_pointer"] = drawPointer;
   doc["pointer_size"] = pointerSize;
-  doc["wifi_ssid"] = ssidap;
-  doc["wifi_password"] = passwordap;
-  doc["webpage_username"] = loginname;
-  doc["webpage_password"] = loginpassword;
   doc["update_interval"] = updateInterval;
 
   // Write JSON to file
   if (serializeJson(doc, file) == 0) {
-    Serial.println("Failed to write JSON");
+    Serial.println("Failed to write settings!");
   }
 
   file.close();
 }
 
 float getInc() {
-  float curNum = (as5600.rawAngle() - baseLine) / 40.96;
-
-  if (curNum < 0.000) {
-    curNum += 100.000;
+  float currentNum = (as5600.rawAngle() - baseLine) / 40.96;
+  if (currentNum < 0.000) {
+    currentNum += 100.000;
   }
-  
-  else if (curNum == 100.00) {
-    curNum = 0.000;
+  else if (currentNum == 100.00) {
+    currentNum = 0.000;
   }
+  return currentNum;
+}
 
-  return curNum;
+
+// Draw border around screen if enabled
+void drawScreenBorder() {
+  if (drawBorder) {
+    tft.fillScreen(toColor(borderColor));
+    tft.fillCircle(tftWidth / 2, tftHeight / 2, int((tftWidth / 2) * (1 - borderThickness)), toColor(background));
+  }
+  else {
+    tft.fillScreen(toColor(background));
+  }
 }
 
 // Add new boot screen options here
-void boot_display() {
+void bootDisplay() {
   if (bootImage == "dial") {
     draw_dial();
   }
 
+  // Wait long enough to make sure we're not touching the encoder
+  delay(bootTime);
   tft.fillScreen(toColor(background)); // Clear screen
 }
 
@@ -568,97 +615,16 @@ void draw_dial() {
         xStart + offsetX, yStart + offsetY,
         toColor(background));
   }
-
-  // Wait long enough to make sure we're not touching the encoder
-  delay(bootTime);
 }
 
-// Handles updating the text and pointer if enabled
-void update_display() {
-  String numberStr = String(sensorData);
-
-  // Variables for centering on screen
-  int16_t screenWidth = tftWidth;
-  int16_t screenHeight = tftHeight;
-  int textWidth = numberStr.length() * 6 * textSize; // 6 pixels per char
-  int textHeight = 8 * textSize;                    // 8 pixels height per char
-  int16_t x = (screenWidth - textWidth) / 2;
-  int16_t y = (screenHeight - textHeight) / 2;
-
-  // Erase previous text
-  tft.setTextColor(toColor(background));
-  tft.setCursor(prevX, prevY);
-  tft.println(String(prev_sensorData));
-
-  // Set cursor and display the text
-  tft.setTextColor(toColor(foreground));
-  tft.setCursor(x, y);
-  tft.println(numberStr);
-
-  // Draw pointer
-  if (drawPointer) {
-    // Erase previous pointer
-    float angle = ((100 - prev_sensorData) * 3.6) - 90; // Make sure 0 is at the top of the screen and we're following 0 with the pointer
-    prev_sensorData = sensorData;
-
-    // Convert angle to radians
-    float angleRad = radians(angle);
-    
-    int startX = tftWidth / 2;
-    int startY = tftHeight / 2;
-
-    // Calculate the starting point (18 pixels away from the center along the angle)
-    if (drawBorder) {
-      startX = (tftWidth / 2) + (((tftWidth / 2) * (1 - borderThickness)) * cos(angleRad));
-      startY = (tftHeight / 2) + (((tftHeight / 2) * (1 - borderThickness)) * sin(angleRad));
-    }
-
-    // Calculate the other two points of the isosceles triangle
-    // The acute angle will be split symmetrically on either side
-    float halfAngle = radians(45 / 2); // Half the acute angle to split it evenly
-    
-    // Draw the isosceles triangle
-    tft.fillTriangle(startX, startY, prev_x1, prev_y1, prev_x2, prev_y2, toColor(background));
-
-
-
-    // Draw moving pointer
-    angle = ((100 - sensorData) * 3.6) - 90; // Make sure 0 is at the top of the screen and we're following 0 with the pointer
-    
-    // Convert angle to radians
-    angleRad = radians(angle);
-    
-    startX = tftWidth / 2;
-    startY = tftHeight / 2;
-
-    // Calculate the starting point (18 pixels away from the center along the angle)
-    if (drawBorder) {
-      startX = (tftWidth / 2) + (((tftWidth / 2) * (1 - borderThickness)) * cos(angleRad));
-      startY = (tftHeight / 2) + (((tftHeight / 2) * (1 - borderThickness)) * sin(angleRad));
-    }
-    
-    // Calculate the other two points of the isosceles triangle
-    // The acute angle will be split symmetrically on either side
-    halfAngle = radians(45 / 2); // Half the acute angle to split it evenly
-
-    // Calculate the two other points based on the isosceles property
-    int x1 = startX - pointerSize * cos(angleRad - halfAngle);
-    int y1 = startY - pointerSize * sin(angleRad - halfAngle);
-    
-    int x2 = startX - pointerSize * cos(angleRad + halfAngle);
-    int y2 = startY - pointerSize * sin(angleRad + halfAngle);
-
-    prev_x1 = x1;
-    prev_x2 = x2;
-    prev_y1 = y1;
-    prev_y2 = y2;
-    
-    // Draw the isosceles triangle
-    tft.fillTriangle(startX, startY, x1, y1, x2, y2, toColor(borderColor));
+int normalizeNum(int num) {
+  while (num >= 100) {
+    num -= 100;
   }
-
-  prevX = x;
-  prevY = y;
+  while (num < 0) {
+    num += 100;
+  }
+  return num;
 }
 
 void notFound(AsyncWebServerRequest *request) {
