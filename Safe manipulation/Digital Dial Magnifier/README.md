@@ -160,13 +160,13 @@ RST: to esp pin 12
 2. Solder one wire to each leg of the button and press it into place.
 3. Glue the 3 coupler parts together and insert into the body before putting the magnet in (the magnet makes it hard to put in and out).
 4. Solder wires to the AS5600 board (wires coming out the back!) and screw it into the body (chip side down, wire side up) with the 4 6mm bolts. Different brands even of the same aesthetic seem to have slightly different dimensions so you make need to lightly file a side of the pcb to fit.
-5. Solder the headers onto the esp32 facing up. Clip the bottom flush and clip the headers near the encoder so they don't stick up past the bolts holing the encoder down.
-6. Solder wires to the screen then put it in the body. The back should rest on the 4 bolts holding the encoder down.
-7. Put each part in it's respective cutout and then solder the connections. I would start with the shorter connections first so those wires can lay flatter.
-8. Put the lid on. The tab on the flat end goes first then lower the rounded end down. 
-9. Screw the bar magnet into the bottom of the base and then insert the rod into the top.
+5. Solder the headers onto the esp32 facing up. Clip the bottom flush and after inserting into the body, clip the headers near the encoder so they don't stick up past the bolts holing the encoder down.
+6. Put the charging board into the body and solder the battery to it.
+7. Wire up the encoder and charging board to the esp.
+8. Solder the screen wires to the esp, put the screen in, then solder the wires to the screen. 
+9. Put the lid on. The tab on the flat end goes first then lower the rounded end down. 
+10. Screw the bar magnet into the bottom of the base and then insert the rod into the top.
 
-Depending on what battery you got, there should be just enough space for a piece of thick double sided tape under the battery if you wish. Everything else should be a press fit but you can always use a bit of glue if it's too loose.
 
 ## Arduino IDE settings:
 
