@@ -26,7 +26,7 @@ This is an encoder that sits on the dial of a safe lock to aid in manipulation. 
 
 ## Use
 
-Left USB port for charging and right USB port for wired power. Pass through charging is supported. And if both wired power and battery are on, protections are in place as to not overload the device.
+Left USB port for charging and right USB port for wired power. Pass through charging is supported. And if both wired power and battery are on, protections are in place as to not overload the device. You must use a low spec charger. If you use a high speed charger/cable, it won't charge.
 
 1. Put a small piece of double sided tape in the middle of the dial.
 2. Slide the magnetic base on to the front of the safe.
