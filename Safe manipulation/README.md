@@ -3,7 +3,7 @@
 Resources for safe manipulation
 
 
-8077JigStand: Mount to hold an S&G 8077 padlock for manipulation.
+8077JigStand: Mount to hold an S&G 8077 padlock for manipulation. My digital indicator: https://a.co/d/2FFRM4I and my spring: https://a.co/d/c3aXYTS.
 
 
 Safecracking for Everyone First Edition: First edition of my book on safe manipulation. Uses the AWL method for manipulation. Poorly written. Uploaded for historical reasons. 
