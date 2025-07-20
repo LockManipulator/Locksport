@@ -183,7 +183,7 @@ Flash Size: 4MB (32MB)
 JTAG Adapter: Disabled  
 Arduino Runs On: Core 1  
 USB Firmware MSC On Boot: Disabled  
-Partition Scheme: Default 4MB with SPIFFS (1.2MB APP/1.5MB SPIFFS)
+Partition Scheme: Default 4MB with SPIFFS (1.2MB APP/1.5MB SPIFFS)  
 PSRAM: QSPI PSRAM  
 Upload Mode: UART0/Hardware CDC  
 Upload Speed: 921600  
