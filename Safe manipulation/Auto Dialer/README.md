@@ -191,7 +191,9 @@ If you're using Arduino IDE above version 1.8 (99.9% you are if you use Arduino 
 Libraries
 
 Async TCP by ESP32Async ver. 3.4.7: https://github.com/ESP32Async/AsyncTCP
+
 ESP Async WebServer by ESP32Async ver. 3.8.0: https://github.com/ESP32Async/ESPAsyncWebServer
+
 TMCStepper by teemuatlut ver. 0.7.3: https://github.com/teemuatlut/TMCStepper
 
 To do
