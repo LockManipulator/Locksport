@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabbed Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="tab-container">
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-button active" data-tab="instructions">Instructions</button>
+            <button class="tab-button" data-tab="configuration">Configuration</button>
+            <button class="tab-button" data-tab="view">Live View</button>
+            <button class="tab-button" data-tab="logs">Logs</button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content-container">
+            <!-- Instructions Tab -->
+            <div class="tab-content active" id="instructions">
+                <h2>Disclaimer<br></h2>
+                <p>
+                    1. This device is not intended for any illegal purposes. Only use this on safes you own or have explicit permission to use it on.<br>
+                    2. This device is not guaranteed to work.<br>
+                    3. Motor will be hot after running. Do not touch, it will burn!<br>
+                    4. This is (usually) a destructive opening device. It is likely that some internals of the lock will be destroyed due to mechanical wear and need to be replaced. Speed does not change this. This is caused by the sheer amount of combinations being entered and will age the lock by decades. If the lock is an antique or rare lock, please consider manipulation first. If an auto dialer can open a lock, then manipulation can too.
+                    <br><br>
+                </p>
+
+                <h2>Lock compatibility<br></h2>
+                <p>
+                    This device does not work on locks that require an additional action to open, such as pushing in the dial (S&G 8500/2900 series locks and Star/AMSEC push in dial safes) or direct entry locks. If your dial can be pushed in like a button at any point then this device will not work. If you apply pressure to the handle (try both directions) and the dial gets much harder/impossible to turn, this device will not work.
+                    <br><br>
+                </p>
+
+                <h2>Setting up the AutoDialer<br></h2>
+                <p>
+                    1. Put a rag/towel over the magnet on the leg and slide it onto the front of the safe near the dial.<br>
+                    2. Slide metal rods through the leg slide.<br>
+                    3. Slide the motor onto the rods.<br>
+                    4. Slide the leg slide onto the leg.<br>
+                    5. While holding the motor centered on the dial, tighten the grippers onto the dial.<br>
+                    6. Tighten the screws on the leg and motor to hold everything in place.<br>
+                    7. Slowly spin the dial, making sure the motor has minimal to no wobble. If there seems to be excessive wobble or force on the motor, remount it.
+                    <br><br>
+
+                    DO NOT TOUCH DEVICE WHILE OPERATING! It can, and will, cause serious injury. Ask me how I know.
+                    <br><br>
+
+                    No device is perfect. It is recommended to be within earshot of the device in case of a false negative when checking if the lock is open. When the lock opens, you will hear a *clunk* as it unlocks. If the device falsely determines the lock is not open, it will sound like *clunk clunk* as it unlocks and relocks the lock. If you hear this, stop the device immediately by either the "Emergency Stop" button or turning it off. Try the most recent combinations or restart the device and limit the search area.
+                    <br><br>
+                </p>
+
+                <h2>Terminology<br></h2>
+                <p>
+                    <b>Left rotation:</b> This is spinning the dial counterclockwise. Or, if you imagine it's a wheel of car while looking at the side of the car, it's spinning in a way to move the car to the left.
+                    <br><br>
+
+                    <b>Right rotation:</b> This is spinning the dial clockwise. Or, if you imagine it's a wheel of a car while looking at the side of the car, it's spinning in a way to move the car to the right.
+                    <br><br>
+
+                    <b>Drop-in area:</b> The area on the dial where the internals of the lock check for a correct combination. It is defined as being the space between the left and right contact points. Also known as a contact area.
+                    <br><br>
+
+                    <b>Contact point:</b> This is a point of resistance that is always on the dial in the same place. Do not mistake feeling the wheels in the lock for the contact point. The wheels will pick up where you leave them so the resistance will change places, unlike a contact point. There are usually 2 of these roughly ~5-15 numbers apart. These points are best felt from within the drop-in area.
+                    <br><br>
+
+                    <b>Left contact point:</b> This is the point felt when spinning right, thus visually it is to the left of the right contact point on the dial.
+                    <br><br>
+
+                    <b>Right contact point:</b> This is the point felt when spinning left, thus visually it is to the right of the left contact point on the dial.
+                    <br><br>
+                </p>
+
+                <h2>Locating the contact points<br></h2>
+                <p>
+                    1. Spin the dial 1 rotation to the left. It does not matter where the dial currently is, just spin 1 rotation left.<br>
+                    2. Continue spinning left until you reach 50 and stop on 50.<br>
+                    3. Slowly turn right until you feel some resistance trying to stop the dial from moving. This should occur before you get back to 50. If you get back to 50 without feeling it, start the process over.<br>
+                    4. The resistance will be best felt turning right. Going back and forth over it should result in it staying on the same number.<br>
+                    5. This is the left contact point. From here, slowly turn left to locate the right contact point. It should be within ~7-15 numbers of the left contact point.
+                    <br><br>
+                </p>
+
+                <h2>Determining the number of wheels<br></h2>
+                <p>
+                    1. Spin the dial at least 5 times in either direction and stop on 50.<br>
+                    2. Reverse the direction and feel for resistance each time you pass 50. As you pass 50, make sure you turn slow, gentle, and continuous. The resistance is not always easy to feel. And you must be continuous in your turning, otherwise you will feel the resistance of wheels you've already picked up.<br>
+                    3. Each time you feel resistance while passing 50, add 1 to the number of wheels.<br>
+                    4. It is likely that the resistance will not be felt at exactly 50. It will tend to drift past 50, usually by 0.5 increments each time. So for a 3 wheel lock, you will feel the first resistance 0.5 increments past 50, then the second resistance 1 increment past 50, then the last resistance 1.5 increments past 50.
+                    <br><br>
+                </p>
+
+                <h2>Using the controls<br></h2>
+                <p>
+                    <b>Current number:</b> Enter the current number on the dial (using decimals if it's not a whole number) and click "Center" to automatically center the dial on 0.
+                    <br><br>
+
+                    <b>Spin dial:</b> Spins the dial left and right to make sure it returns to 0 properly.
+                    <br><br>
+
+                    <b>Wheel setup:</b> 
+                    Wheels are added in order of 1, 2, 3, etc with wheel 1 being the wheel furthest from the drive cam (and 1st number in the combination). If you remove a wheel and your wheels are not numbered consecutively anymore, the next wheel added will be the first missing wheel (e.g. You have wheels 1, 2, and 3 and remove wheel 2 to be left with wheels 1 and 3. The next wheel you add will slot in as wheel 2.).
+                    <br><br>
+
+                    Open rotation: The direction the wheel spins when entering the combination. Be aware that wheels will increment either up or down depending on their open rotation. If a wheel opens with a left rotation, it will increment it up. And if a wheel opens with a right rotation, it will increment it down.
+                    <br><br>
+
+                    Exclusions: Enter numbers or a range going up (i.e. 10-30) that are not to be tested, start and end inclusive, and comma separated (e.g. 5, 17.5, 50-60, 75). If you know the correct number, add a range around it i.e. 21-19 if 20 is the correct number (NOT 19-21 as that excludes the correct number!). Keep in mind your "Test every 'x' numbers" value since if it's even such as "2", then a range around an odd number (e.g. 22-20) will result in no valid possible combinations. If you know a number and it's odd, it's best to allow the number below and above (e.g. 23-19 if 21 is the number).
+                    <br><br>
+
+                    <b>Speed:</b> Higher is faster, defaults to 3. The main differences between speeds is the acceleration/deceleration. The top speed only slightly changes as top speed does not make as much difference as the deceleration. If the wheels in a lock spin too freely, then they can carry momentum and keep moving after the dial stops, which is solved by a longer deceleration time. Higher speed is also less torque so reduce speed if the dial is harder to turn. Recommended speed is 2 or 3.<br>
+                    Speed 1: ~55 combinations/min<br>
+                    Speed 2: ~65 combinations/min<br>
+                    Speed 3: ~80 combinations/min
+                    <br><br>
+
+                    <b>Left contact point:</b> Enter the left contact point for the lock, can have a decimal point but nearest whole number works fine. The left contact point is the contact point that is felt while turning the dial to the right.
+                    <br><br>
+
+                    <b>Right contact point:</b> Enter the right contact point for the lock, can have a decimal point but nearest whole number works fine. The right contact point is the contact point that is felt while turning the dial to the left.
+                    <br><br>
+
+                    <b>Test every "x" numbers:</b> How many numbers to count by when testing combinations. Can have a decimal point. Rarely will this need to be changed.
+                    <br><br>
+
+                    <b>Start wheel 1 at:</b> Which number to start with for the first number in the combination. For instance, not many people choose 0 as the first number in the combinaiton. Can have a decimal point but keep in mind your "Test every 'x' numbers" value as it will increment by that amount from here.
+                    <br><br>
+
+                    <b>Lock opening rotation:</b> What direction the dial turns to open the lock after dialing the combination. Will be "Right" for most modern 3 wheel locks.
+                    <br><br>
+
+                    <b>Test drop-in area:</b> Whether to check for the last number in the combination within the drop in area. Can safely be "No" in most cases as the last number being in this range is an invalid combination.
+                    <br><br>
+
+                    <b>Distance to open:</b> How far past a contact point to check for the lock being open. For instance, if the lock opens with a right rotation, it will spin "x" numbers to the right past the left contact point to check for the dial stopping. This must be far enough for the dial to stop moving in order for the device to detect it is open. Recommended values are 15-20.
+                    <br><br>
+
+                    <b>Avoid numbers within "x":</b> Don't try combinations where consecutive numbers are within "x" of each other. Recommended values are 3-5.
+                    <br><br>
+
+                    <b>Rotational conversion:</b> The difference in location a wheel will pick up from where it's left when going in the opposite direction. Can be ignored unless you have a very specific need. If you don't know what this is, you don't need it. A common value in modern safe locks is 0.5. 
+                    <br><br>
+                </p>
+
+                <h2>After device stops<br></h2>
+                <p>
+                    DO NOT TOUCH MOTOR! It will be very hot!<br>
+                    If the device has stopped, turn it off and try opening the safe. If the safe opens, do NOT relock it until you have properly recovered the combination from the lock itself! Do NOT trust the combination that the device says it opened on. Wheels can carry momentum so the dialed combination may not be the actual combination. The dialed combination may also be close to, but not quite on, the actual combination and dialing by hand will not result in the lock opening again.
+                    <br><br>
+
+                    If the safe does not open, there are many possible reasons. 
+                    <br><br>
+
+                    In the case of the device going through all possible combinations:<br>
+                    1. The last number is in the drop-in area and the device was told to not try this.<br>
+                    2. Consecutive numbers are closer than what the device was told to check.<br>
+                    3. The speed might've been too fast and the wheels are carrying momentum and not stopping where they should.<br>
+                    4. If the speed is too high, and the dial harder to turn, the motor can be skipping steps.<br>
+                    5. The device did open the lock but had a false negative when checking.<br>
+                    6. The gripper could be slipping on the dial if not tight enough.
+                    <br><br>
+
+                    In the case of the the device says the lock is open but it's not: The device most likely had a false positive when checking if the lock is open. You can restart it but start from roughly where it left off. Look at what numbers have been tried for the first number in the combination and exclude that zone from the first wheel. Do not do this for the other wheels.
+                </p>
+            </div>
+
+            <!-- Configuration Tab -->
+            <div class="tab-content" id="configuration">
+                <p>
+                    Before ANYTHING else, make sure dial is on 0 and when spun, returns back to 0<br>
+                    <label for="cur-num-input">Current Number:</label>
+                        <input type="number" step="any" id="cur-num-input" name="cur-num-input">
+                        <button type="button" id="center-button" name="center-button">Center dial</button>
+                        <button type="button" id="spin-button" name="auto-button">Spin dial</button><br><br>
+
+                    <button class="big-button" type="button" id="quick-start-button" name="quick-start-button">Quick Start</button><br><br>
+                    Quick Start will assume a 3 wheel L-R-L dialing sequence with the defaults below.<br><br>
+
+                    <h2>Wheels Setup</h2>
+                    <p>Wheels add in order of 1, 2, 3, etc. For exclusions, enter numbers (e.g. 38) or ranges (e.g. 15-25) separated by a comma.</p><br>
+
+                    <label for="wheel-open-rot">Open rotation:</label>
+                    <select id="wheel-open-rot" name="wheel-open-rot">
+                        <option value="L" selected>Left</option>
+                        <option value="R">Right</option>
+                    </select><br>
+
+                    <label for="exclusions-input">Exclusions:</label>
+                        <input type="text" id="exclusions-input" name="exclusions-input" size="6" maxlength="32"><br>
+                    
+                    <button type="button" id="add-wheel-button" name="add-wheel-button">Add wheel</button><br>
+
+                    <div class="hscrollbox" id="wheels"></div><br>
+
+                    <h2>Settings</h2>
+                    <label for="speed">Speed (higher is faster):</label>
+                    <select id="speed" name="speed">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected>3</option>
+                    </select><br>
+
+                    <label for="lcp-input">Left contact point:</label>
+                        <input type="number" step="any" id="lcp-input" name="lcp-input" value="95"><br>
+
+                    <label for="rcp-input">Right contact point:</label>
+                        <input type="number" step="any" id="rcp-input" name="rcp-input" value="5"><br>
+
+                    <label for="everyX">Test every "x" numbers:</label>
+                        <input type="number" step="any" id="everyX" name="everyX" value="2"><br>
+
+                    <label for="w1start">Start wheel 1 at:</label>
+                        <input type="number" step="any" id="w1start" name="w1start" value="10"><br>
+
+                    <label for="open-rot">Lock opening rotation:</label>
+                    <select id="open-rot" name="open-rot">
+                        <option value="R" selected>Right</option>
+                        <option value="L">Left</option>
+                    </select><br>
+
+                    <label for="drop-check">Test in drop-in area:</label>
+                    <select id="drop-check" name="drop-check">
+                        <option value="N" selected>No</option>
+                        <option value="Y">Yes</option>
+                    </select><br>
+
+                    <label for="open-distance">Distance to open:</label>
+                        <input type="number" step="any" id="open-distance" name="open-distance" value="20"><br>
+
+                    <label for="avoid-range">Avoid numbers within "x":</label>
+                        <input type="number" step="any" id="avoid-range" name="avoid-range" value="5"><br>
+
+                    <label for="rotConversion">Rotational conversion:</label>
+                        <input type="number" step="any" id="rotConversion" name="rotConversion" value="0.5"><br><br>
+
+                    <button class="big-button" type="button" id="start-button" name="start-button">Start</button>
+                    <button class="big-button" type="button" id="stop-button" name="stop-button">Emergency Stop</button><br>
+                </p>
+            </div>
+
+            <!-- View Tab -->
+            <div class="tab-content" id="view">
+                <div id="live-status-container">
+                    <p id="live-status"><span class="status-label">Status: </span><span id="status-text" class="status-waiting">Waiting</span></p>
+                    <div id="live-wheels-container">
+                        <div id="live-wheels-header"></div>
+                        <div id="live-wheels-values"></div>
+                    </div>
+                    <div id="progress-container">
+                        <div id="progress-bar-track">
+                            <div id="progress-bar-fill"></div>
+                        </div>
+                        <p id="progress-label">— / —</p>
+                    </div>
+                    <p id="elapsed-label">Elapsed Time: —</p>
+                </div>
+            </div>
+
+            <!-- Logs Tab -->
+            <div class="tab-content" id="logs">
+                <div id="logs-toolbar">
+                    <label id="autoscroll-label">
+                        <input type="checkbox" id="autoscroll-checkbox" checked>
+                        Auto-scroll
+                    </label>
+                </div>
+                <div class="scrollbox" id="output">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

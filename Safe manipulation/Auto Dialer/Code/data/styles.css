@@ -1,0 +1,531 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #061433;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.tab-container {
+    width: 100%;
+    height: 100vh;
+    background: #061433;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Tab Navigation */
+.tab-nav {
+    display: flex;
+    background-color: #11337a;
+    border-bottom: 1px solid #ddd;
+    flex-shrink: 0;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 16px 24px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.tab-button.active {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #fbbf24;
+}
+
+/* Tab Content Container */
+.tab-content-container {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.tab-content {
+    display: none;
+    padding: 32px;
+    height: 100%;
+    overflow-y: auto;
+    animation: fadeIn 0.3s ease-in-out;
+    background: #061433;
+    max-width: 900px;  /* Adjust this value as needed */
+    margin: 0 auto;  /* Centers the content */
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Typography */
+h1 {
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    border-bottom: 3px solid #fbbf24;
+    padding-bottom: 12px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+    color: #f8fafc;
+    font-size: 1.875rem;
+    font-weight: 600;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+h3 {
+    color: #e2e8f0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+p {
+    margin-bottom: 16px;
+    color: #cbd5e1;
+    font-size: 1rem;
+}
+
+ul {
+    margin-bottom: 16px;
+    padding-left: 24px;
+}
+
+li {
+    margin-bottom: 8px;
+    color: #cbd5e1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .tab-container {
+        height: 100vh;
+    }
+    
+    .tab-button {
+        flex: 1 1 50%;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    
+    .tab-content {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tab-button {
+        flex: 1 1 100%;
+        font-size: 16px;
+    }
+    
+    .tab-content {
+        padding: 16px;
+    }
+    
+    h1 {
+        font-size: 1.75rem;
+    }
+}
+
+/* Custom Scrollbar */
+.tab-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.tab-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.tab-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+.tab-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.wheel {
+  display: inline-block;
+  background-color: rgba(173, 216, 230, 0.5);
+  padding: 2px;
+  margin-right: 10px;
+  vertical-align: top;
+  max-width: 150px;
+  min-width: 130px;
+  min-height: 100px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  text-align: center;
+  white-space: normal;
+}
+
+h3 {
+    font-size: 1.5em;
+    margin-bottom: 0.2em;
+    text-align: center;
+    color: white;
+}
+
+.scrollbox h2 {
+    font-size: 1em;
+    margin-bottom: 1em;
+    text-align: center;
+    color: white;
+}
+
+.scrollbox p {
+    margin-bottom: 1em;
+    line-height: 1.6;
+    text-align: left;
+    color: white;
+}
+
+.hscrollbox {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;  /* Disable vertical scroll */
+  white-space: nowrap;
+  border: 1px solid #ccc;
+  padding: 3px;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;  /* Firefox */
+    width: 8ch;       /* approx 6 characters wide */
+    max-width: 100%;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.3); /* translucent background */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 2px;
+    color: white;
+}
+
+input[type=text] {
+    -moz-appearance: textfield;  /* Firefox */
+    width: 18ch;       /* approx 6 characters wide */
+    max-width: 100%;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.3); /* translucent background */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 2px;
+    color: white;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield !important;
+}
+
+/* Internet Explorer 10+ */
+input[type=number]::-ms-clear,
+input[type=number]::-ms-expand {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Style for select dropdowns */
+select {
+  background-color: rgba(255, 255, 255, 0.3); /* translucent white */
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 2px;
+}
+
+select option {
+  background-color: rgba(0, 0, 0, 0.8); /* dark background for options */
+  color: white;                         /* white text */
+}
+
+/* Style for buttons */
+button {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  padding: 1px 5px 0px 5px;
+}
+
+button:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #333;
+}
+
+button:active {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: #222;
+  transform: scale(0.98); /* slightly shrink to show it's pressed */
+  transition: none; /* immediate effect on press */
+}
+
+.big-button {
+  font-size: 18px; /* example size */
+  padding: 10px 20px; /* example padding */
+}
+
+.dynamic-btn {
+  height: 16px;               /* fixed height */
+  white-space: normal;        /* allow multiline */
+  overflow-wrap: break-word;  /* break long words */
+  vertical-align: top;
+  width: 60px;
+}
+
+.wheel {
+  display: inline-block;
+  background-color: rgba(173, 216, 230, 0.5);
+  padding: 2px;
+  margin-right: 10px;
+  vertical-align: top;
+  max-width: 120px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  text-align: center;
+}
+
+/* Make label and button stack tightly */
+.wheel > div, 
+.wheel > button {
+  margin: 0;           /* Remove default margin */
+  padding: 0;          /* Remove default padding */
+  line-height: 1.2;    /* Adjust line height */
+}
+
+/* Add a small margin only if needed */
+.wheel > button {
+  margin-top: 5px;     /* smaller gap above button */
+  cursor: pointer;
+}
+
+.scrollbox {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+}
+
+.scrollbox::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scrollbox::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollbox::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.4); /* translucent white */
+    border-radius: 4px;
+}
+
+label {
+    display: inline-block;
+    width: 200px;
+    color: white;
+}
+
+/* Live View */
+#live-status-container {
+    padding-top: 8px;
+}
+
+#live-status {
+    font-size: 1.4rem;
+    margin-bottom: 24px;
+    color: #cbd5e1;
+}
+
+.status-label {
+    color: #94a3b8;
+}
+
+.status-waiting {
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.status-trying {
+    color: #fbbf24;
+    font-weight: 600;
+}
+
+.status-emergency {
+    color: #f87171;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+#live-wheels-container {
+    display: inline-block;
+}
+
+#live-wheels-header,
+#live-wheels-values {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+#live-wheels-header {
+    margin-bottom: 4px;
+}
+
+.live-wheel-cell {
+    min-width: 80px;
+    text-align: center;
+    color: #e2e8f0;
+    font-size: 1.1rem;
+}
+
+.live-wheel-sep {
+    min-width: 28px;
+    text-align: center;
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.live-wheel-num {
+    color: #fbbf24;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+/* Progress bar */
+#progress-container {
+    margin-top: 24px;
+    max-width: 480px;
+}
+
+#progress-bar-track {
+    width: 100%;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+#progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: #fbbf24;
+    border-radius: 7px;
+    transition: width 0.4s ease;
+}
+
+#progress-label {
+    margin-top: 6px;
+    font-size: 0.95rem;
+    color: #94a3b8;
+    text-align: right;
+}
+
+#elapsed-label {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    color: #94a3b8;
+}
+
+/* Logs toolbar */
+#logs-toolbar {
+    display: flex;
+    align-items: center;
+    padding: 6px 0 8px 0;
+    flex-shrink: 0;
+}
+
+#autoscroll-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    cursor: pointer;
+    width: auto;
+}
+
+#autoscroll-label input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    accent-color: #fbbf24;
+    cursor: pointer;
+}
+
+/* Make the logs tab a column layout so toolbar + scrollbox stack */
+#logs {
+    display: none;
+    flex-direction: column;
+}
+
+#logs.active {
+    display: flex;
+}
