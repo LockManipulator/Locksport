@@ -1,5 +1,7 @@
 ## Auto Dialer
 
+An auto dialer is a device which automatically tries possible combinations for most group 2 and group 1 mechanical safe locks and stops when it detects the lock is open. Commercial auto dialers start at $2,000+ and are usually restrcited to locksmith or government purchases only. I strongly disagree with this mindset so here's one that beats all the others on the market and is only ~$100-$200 depending on where you live. I am far from the most capable so the source code is available for anyone to improve upon. 
+
 ![Full](Images/Full.jpg)
 ![Gripper](Images/Gripper.jpg)
 
@@ -16,8 +18,6 @@ Disclaimer
 1. This device is not intended for any illegal purposes. Only use this on safes you own or have explicit permission to use it on.
 2. This device is not guaranteed to open every safe.
 3. This is a destructive opening device. It is most likely that some internals of the lock will be destroyed due to mechanical wear and need to be replaced. Speed does not change this. This is caused by the sheer amount of combinations being entered and will age the lock by decades. If the lock is an antique or rare lock, please consider manipulation first. If an auto dialer can open a lock, then manipulation can too.
-
-An auto dialer is a device which automatically tries possible combinations for most group 2 and group 1 mechanical safe locks and stops when it detects the lock is open. Commercial auto dialers start at $2,000+ and are usually restrcited to locksmith or government purchases only. I strongly disagree with this mindset so here's one that beats all the others on the market and is only ~$100-$200 depending on where you live. I am far from the most capable so the source code is available for anyone to improve upon. 
 
 Coming up: I've already built and tested a successful auto manipulator and will be producing them for sale. Like this project, all its parts and source code will be available.
 
