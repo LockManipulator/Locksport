@@ -15,6 +15,10 @@ Wifi Password: AutoDialer
 
 Home Page: 192.168.0.1
 
+Home Page Username: root
+
+Home Page Password: toor
+
 Disclaimer
 ----------
 1. This device is not intended for any illegal purposes. Only use this on safes you own or have explicit permission to use it on.
