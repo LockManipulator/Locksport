@@ -299,6 +299,8 @@ document.getElementById("start-button").addEventListener("click", function () {
   const rotConversion = document.getElementById("rotConversion").value;
   const dropCheck = document.getElementById("drop-check").value;
   const speed = document.getElementById("speed").value;
+  const w1start = document.getElementById("w1start").value;
+
   if (!rcp || !lcp) {
     alert("Please enter both contact points before starting!");
     return;
@@ -313,7 +315,8 @@ document.getElementById("start-button").addEventListener("click", function () {
     openDistance: parseFloat(openDistance),
     rotConversion: parseFloat(rotConversion),
     dropCheck: dropCheck,
-    speed: speed
+    speed: speed,
+    w1start: w1start
   };
   fetch('/start', {
     method: 'POST',

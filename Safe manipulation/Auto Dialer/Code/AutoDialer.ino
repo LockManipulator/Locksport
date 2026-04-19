@@ -896,8 +896,6 @@ void AutoDial() {
     numsTried[x] = 0;
   }
 
-  curCombo[0] = wheelOneStartPosition;      // Start wheel one to value from webpage
-
   // Count total amount of possibilities
   int count = 0;
   int iterCount = 0;
@@ -955,6 +953,8 @@ void AutoDial() {
 
   // Make sure all wheels are on 0
   Rotate(lock->wheels[0].openRot, lock->wheelCount);
+
+  curCombo[0] = wheelOneStartPosition;      // Start wheel on value from webpage
 
   // Dew it
   while (!done) {
