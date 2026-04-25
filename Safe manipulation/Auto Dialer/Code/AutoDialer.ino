@@ -90,6 +90,7 @@ bool checkDropIn = false;                // Whether to check the last wheel in t
 float wheelOneStartPosition = 0;         // Start auto dialing with wheel one at this position
 float* possibleNums = nullptr;           // Possible numbers in the combination
 int possibleNumsCount = 0;               // How many possible numbers there are
+bool checkBoth = false;                  // Whether to try opening in both directions
 
 //AP handling
 const char* ssidap = "AutoDialer";       // Access point name
@@ -199,6 +200,11 @@ void setup() {
       lock->rotConversion = doc["rotConversion"].as<float>();
       lock->openPast = doc["openDistance"].as<float>();
       lock->avoidRange = doc["avoidWithin"].as<float>();
+
+      if (lock->openRot == "Unknown") {
+        lock->openRot = "R";
+        checkBoth = true;
+      }
 
       // Add wheels
       JsonArray wheelsArray = doc["wheels"].as<JsonArray>();
@@ -858,10 +864,10 @@ bool ValidCombo(float* nums, int count) {
 // Checks if the lock is open after each combination
 void TestOpen() {
   // Go to drop-in area
-  if (lock->wheels[lock->wheelCount - 1].openRot == "L") {
+  if (lock->lastRotation == "L") {
     GoTo("R", dropInPoint);
   }
-  else if (lock->wheels[lock->wheelCount - 1].openRot == "R") {
+  else if (lock->lastRotation == "R") {
     GoTo("L", dropInPoint);
   }
 
@@ -888,57 +894,6 @@ void TestOpen() {
   else if (lock->openRot == "L") {
     float targetPos = NormalizeNum(lock->RCP + lock->openPast);\
     float tempPos = lock->position;
-
-    // Update wheels if any are picked up from trying to open the lock
-    for (int x = lock->wheelCount - 1; x >= 0; x--) {
-      if (InRange(lock->wheels[x].position, tempPos, targetPos, "L")) {
-        lock->wheels[x].position = targetPos;
-        lock->wheels[x].rotation = "L";
-        tempPos = lock->wheels[x].position;
-      }
-      else {
-        break;
-      }
-    }
-
-    testingOpen = true;
-    GoTo("L", targetPos);
-    testingOpen = false;
-  }
-  // If opening direction is unknown, try both
-  else {
-    float lastWheelPos = lock->wheels[lock->wheelCount - 1].position;   // Save last wheel's position in case we mess it up
-    float targetPos = NormalizeNum(lock->LCP - lock->openPast);
-    float tempPos = lock->position;
-
-    // Update wheels if any are picked up from trying to open the lock
-    for (int x = lock->wheelCount - 1; x >= 0; x--) {
-      if (InRange(lock->wheels[x].position, tempPos, targetPos, "R")) {
-        lock->wheels[x].position = targetPos;
-        lock->wheels[x].rotation = "R";
-        tempPos = lock->wheels[x].position;
-      }
-      else {
-        break;
-      }
-    }
-    testingOpen = true;
-    GoTo("R", targetPos);
-    testingOpen = false;
-
-    // Reset last wheel in case we moved it
-    SetWheel(lock->wheelCount - 1, lastWheelPos, lock->wheels[lock->wheelCount - 1].openRot);
-
-    // Go to drop-in area
-    if (lock->lastRotation == "L") {
-      GoTo("R", dropInPoint);
-    }
-    else if (lock->lastRotation == "R") {
-      GoTo("L", dropInPoint);
-    }
-
-    targetPos = NormalizeNum(lock->RCP + lock->openPast);
-    tempPos = lock->position;
 
     // Update wheels if any are picked up from trying to open the lock
     for (int x = lock->wheelCount - 1; x >= 0; x--) {
@@ -1133,6 +1088,20 @@ void AutoDial() {
         SetWheel(x + 1, curCombo[x], lock->wheels[x].openRot);
       }
       TestOpen();   // Test if lock is open
+
+      // If opening rotation is unknown
+      if (checkBoth) {
+        SendLog("Checking both");
+
+        // Dial combination again in case any wheels were messed up
+        for (int x = 0; x < lock->wheelCount; x++) {
+          SetWheel(x + 1, curCombo[x], lock->wheels[x].openRot);
+        }
+
+        lock->openRot = (lock->openRot == "L") ? "R" : "L";   // Change opening direction
+        TestOpen();
+        lock->openRot = (lock->openRot == "L") ? "R" : "L";   // Change opening direction back to original
+      }
     }
 
     // Increment combination
