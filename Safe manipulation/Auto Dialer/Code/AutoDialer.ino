@@ -928,10 +928,10 @@ void TestOpen() {
     SetWheel(lock->wheelCount - 1, lastWheelPos, lock->wheels[lock->wheelCount - 1].openRot);
 
     // Go to drop-in area
-    if (lock->wheels[lock->wheelCount - 1].openRot == "L") {
+    if (lock->lastRotation == "L") {
       GoTo("R", dropInPoint);
     }
-    else if (lock->wheels[lock->wheelCount - 1].openRot == "R") {
+    else if (lock->lastRotation == "R") {
       GoTo("L", dropInPoint);
     }
 
@@ -956,14 +956,32 @@ void TestOpen() {
   }
 }
 
+long long TotalPermutations(int n, int r) {
+  long long result = 1;
+  for (int i = 0; i < r; i++) {
+    result *= (n - i);
+  }
+  return result;
+}
+
 // Permutates through user given possible numbers
-void SinglePermutations(float* nums, int count, float* current, bool* used, int depth) {
+void SinglePermutations(float* nums, int count, float* current, bool* used, int depth, long long& currentTry, long long totalTries) {
   if (emergencyStop) {
     return;
   }
 
   // Stop at lock->wheelCount length of combination
   if (depth == lock->wheelCount) {
+    currentTry++;
+
+    // Build combo string for status
+    String comboStr = "";
+    for (int x = 0; x < lock->wheelCount; x++) {
+      comboStr += String(current[x], 1);
+      if (x < lock->wheelCount - 1) comboStr += " - ";
+    }
+    SendStatus("Trying " + comboStr, current, lock->wheelCount, currentTry, totalTries);
+
     // Set each wheel to its position with its opening rotation
     for (int x = 0; x < lock->wheelCount; x++) {
       SetWheel(x + 1, current[x], lock->wheels[x + 1].openRot);
@@ -976,10 +994,10 @@ void SinglePermutations(float* nums, int count, float* current, bool* used, int 
     
     // If number has not been used yet
     if (!used[i]) {
-      used[i] = true;                                                 // Mark it used
-      current[depth] = nums[i];                                       // Add it to combo
-      SinglePermutations(nums, count, current, used, depth + 1);      // Test combo
-      used[i] = false;                                                // Mark as unused for future permutations
+      used[i] = true;                                                                     // Mark it used
+      current[depth] = nums[i];                                                           // Add it to combo
+      SinglePermutations(nums, count, current, used, depth + 1, currentTry, totalTries);  // Test combo
+      used[i] = false;                                                                    // Mark as unused for future permutations
     }
   }
 }
@@ -997,7 +1015,9 @@ void TryCombinations(float* nums, int count) {
     used[i] = false;
   }
 
-  SinglePermutations(nums, count, current, used, 0);
+  long long currentTry = 0;
+  long long totalTries = TotalPermutations(count, lock->wheelCount);
+  SinglePermutations(nums, count, current, used, 0, currentTry, totalTries);
   
   delete[] current;
   delete[] used;
