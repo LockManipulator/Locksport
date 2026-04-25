@@ -214,8 +214,7 @@ To do
 -----
 (I may not get around to any of this)
 1. Improve calibration (or just read raw sg value) to add support for more speeds.
-2. Add "Unknown" as an option for lock opening rotation and try both directions.
-3. Sort all valid combinations more intelligently e.g. try all valid dates first.
+2. Sort all valid combinations more intelligently e.g. try all valid dates first.
 
 ## License
 This project is licensed under the PolyForm Noncommercial License 1.0.0. 
