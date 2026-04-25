@@ -859,7 +859,7 @@ void TestOpen() {
   if (lock->wheels[lock->wheelCount - 1].openRot == "L") {
     GoTo("R", dropInPoint);
   }
-  else if (lock->wheels[lock->wheelCount - 1].openRot == "R" {
+  else if (lock->wheels[lock->wheelCount - 1].openRot == "R") {
     GoTo("L", dropInPoint);
   }
 
@@ -925,17 +925,17 @@ void TestOpen() {
     testingOpen = false;
 
     // Reset last wheel in case we moved it
-    SetWheel(lock->wheels[lock->wheelCount - 1], lastWheelPos, lock->wheels[lock->wheelCount - 1].openRot);
+    SetWheel(lock->wheelCount - 1, lastWheelPos, lock->wheels[lock->wheelCount - 1].openRot);
 
     // Go to drop-in area
     if (lock->wheels[lock->wheelCount - 1].openRot == "L") {
       GoTo("R", dropInPoint);
     }
-    else if (lock->wheels[lock->wheelCount - 1].openRot == "R" {
+    else if (lock->wheels[lock->wheelCount - 1].openRot == "R") {
       GoTo("L", dropInPoint);
     }
 
-    targetPos = NormalizeNum(lock->RCP + lock->openPast);\
+    targetPos = NormalizeNum(lock->RCP + lock->openPast);
     tempPos = lock->position;
 
     // Update wheels if any are picked up from trying to open the lock
