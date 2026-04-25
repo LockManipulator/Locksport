@@ -854,12 +854,12 @@ bool ValidCombo(float* nums, int count) {
 }
 
 // Checks if the lock is open after each combination
-void TestOpen() { 
+void TestOpen() {
   // Go to drop-in area
   if (lock->wheels[lock->wheelCount - 1].openRot == "L") {
     GoTo("R", dropInPoint);
   }
-  else {
+  else if (lock->wheels[lock->wheelCount - 1].openRot == "R" {
     GoTo("L", dropInPoint);
   }
 
@@ -886,6 +886,57 @@ void TestOpen() {
   else if (lock->openRot == "L") {
     float targetPos = NormalizeNum(lock->RCP + lock->openPast);\
     float tempPos = lock->position;
+
+    // Update wheels if any are picked up from trying to open the lock
+    for (int x = lock->wheelCount - 1; x >= 0; x--) {
+      if (InRange(lock->wheels[x].position, tempPos, targetPos, "L")) {
+        lock->wheels[x].position = targetPos;
+        lock->wheels[x].rotation = "L";
+        tempPos = lock->wheels[x].position;
+      }
+      else {
+        break;
+      }
+    }
+
+    testingOpen = true;
+    GoTo("L", targetPos);
+    testingOpen = false;
+  }
+  // If opening direction is unknown, try both
+  else {
+    float lastWheelPos = lock->wheels[lock->wheelCount - 1].position;   // Save last wheel's position in case we mess it up
+    float targetPos = NormalizeNum(lock->LCP - lock->openPast);
+    float tempPos = lock->position;
+
+    // Update wheels if any are picked up from trying to open the lock
+    for (int x = lock->wheelCount - 1; x >= 0; x--) {
+      if (InRange(lock->wheels[x].position, tempPos, targetPos, "R")) {
+        lock->wheels[x].position = targetPos;
+        lock->wheels[x].rotation = "R";
+        tempPos = lock->wheels[x].position;
+      }
+      else {
+        break;
+      }
+    }
+    testingOpen = true;
+    GoTo("R", targetPos);
+    testingOpen = false;
+
+    // Reset last wheel in case we moved it
+    SetWheel(lock->wheels[lock->wheelCount - 1], lastWheelPos, lock->wheels[lock->wheelCount - 1].openRot);
+
+    // Go to drop-in area
+    if (lock->wheels[lock->wheelCount - 1].openRot == "L") {
+      GoTo("R", dropInPoint);
+    }
+    else if (lock->wheels[lock->wheelCount - 1].openRot == "R" {
+      GoTo("L", dropInPoint);
+    }
+
+    targetPos = NormalizeNum(lock->RCP + lock->openPast);\
+    tempPos = lock->position;
 
     // Update wheels if any are picked up from trying to open the lock
     for (int x = lock->wheelCount - 1; x >= 0; x--) {
