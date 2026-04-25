@@ -935,7 +935,7 @@ void SinglePermutations(float* nums, int count, float* current, bool* used, int 
 
 // Try user given possible combinations before auto dialing
 void TryCombinations(float* nums, int count) {
-  if (count <= 0) {
+  if (count < lock->wheelCount) {
     return;
   }
   float* current = new float[lock->wheelCount];
