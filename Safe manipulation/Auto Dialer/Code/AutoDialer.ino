@@ -986,8 +986,10 @@ void SinglePermutations(float* nums, int count, float* current, bool* used, int 
 
     // Set each wheel to its position with its opening rotation
     for (int x = 0; x < lock->wheelCount; x++) {
-      SetWheel(x + 1, current[x], lock->wheels[x + 1].openRot);
+      SetWheel(x + 1, current[x], lock->wheels[x].openRot);
     }
+    TestOpen();
+    
     return;
   }
 
