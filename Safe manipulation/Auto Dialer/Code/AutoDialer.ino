@@ -944,7 +944,21 @@ void SinglePermutations(float* nums, int count, float* current, bool* used, int 
       SetWheel(x + 1, current[x], lock->wheels[x].openRot);
     }
     TestOpen();
-    
+
+    // If opening rotation is unknown
+    if (checkBoth) {
+      SendLog("Checking both");
+
+      // Dial combination again in case any wheels were messed up
+      for (int x = 0; x < lock->wheelCount; x++) {
+        SetWheel(x + 1, curCombo[x], lock->wheels[x].openRot);
+      }
+
+      lock->openRot = (lock->openRot == "L") ? "R" : "L";   // Change opening direction
+      TestOpen();
+      lock->openRot = (lock->openRot == "L") ? "R" : "L";   // Change opening direction back to original
+    }
+
     return;
   }
 
