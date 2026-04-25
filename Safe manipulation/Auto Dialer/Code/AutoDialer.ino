@@ -321,7 +321,9 @@ void loop() {
       TryCombinations(possibleNums, possibleNumsCount);
     }
 
-    AutoDial();
+    if (!emergencyStop) {
+      AutoDial();
+    }
   
     busy = false;
   }
