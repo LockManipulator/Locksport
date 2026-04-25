@@ -73,6 +73,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+document.getElementById("possible-nums").addEventListener("input", function () {
+  this.value = this.value.replace(/[^0-9,\.]/g, "");
+});
+
 function expandExclusions(str) {
   const result = [];
   if (!str.trim()) return result;
@@ -300,6 +304,11 @@ document.getElementById("start-button").addEventListener("click", function () {
   const dropCheck = document.getElementById("drop-check").value;
   const speed = document.getElementById("speed").value;
   const w1start = document.getElementById("w1start").value;
+  const possibleNums = document.getElementById("possible-nums").value
+    .split(",")
+    .map(s => s.trim())
+    .filter(s => s !== "")
+    .map(Number);
 
   if (!rcp || !lcp) {
     alert("Please enter both contact points before starting!");
@@ -316,7 +325,8 @@ document.getElementById("start-button").addEventListener("click", function () {
     rotConversion: parseFloat(rotConversion),
     dropCheck: dropCheck,
     speed: speed,
-    w1start: w1start
+    w1start: w1start,
+    possibleNums: possibleNums
   };
   fetch('/start', {
     method: 'POST',

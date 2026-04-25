@@ -88,6 +88,8 @@ int stallVal = -4;                       // -64 to +63, automatically calibrated
 float dropInPoint = 0;                   // Middle of the drop in area
 bool checkDropIn = false;                // Whether to check the last wheel in the drop in area
 float wheelOneStartPosition = 0;         // Start auto dialing with wheel one at this position
+float* possibleNums = nullptr;           // Possible numbers in the combination
+int possibleNumsCount = 0;               // How many possible numbers there are
 
 //AP handling
 const char* ssidap = "AutoDialer";       // Access point name
@@ -219,11 +221,27 @@ void setup() {
         checkDropIn = true;
       }
 
-      // Get speed
-      speed = doc["speed"].as<int>();
+      // Free previous array if exists
+      if (possibleNums != nullptr) {
+        delete[] possibleNums;
+        possibleNums = nullptr;
+      }
+
+      // Parse possible known numbers
+      JsonArray numsArr = doc["possibleNums"].as<JsonArray>();
+      possibleNumsCount = numsArr.size();
+      if (possibleNumsCount > 0) {
+        possibleNums = new float[possibleNumsCount];
+        for (int i = 0; i < possibleNumsCount; i++) {
+          possibleNums[i] = numsArr[i].as<float>();
+        }
+      }
 
       // Get wheel 1 start position
       wheelOneStartPosition = doc["w1start"].as<float>();
+
+      // Get speed
+      speed = doc["speed"].as<int>();
 
       if (speed == 1) {
         maxDelay = 1100;
@@ -298,6 +316,10 @@ void loop() {
     SendLog("Avoid range: " + String(lock->avoidRange));
     SendLog("Open past by: " + String(lock->openPast));
     SendLog("Rotational conversion: " + String(lock->rotConversion));
+
+    if (possibleNumsCount > 0) {
+      TryCombinations(possibleNums, possibleNumsCount);
+    }
 
     AutoDial();
   
@@ -832,7 +854,7 @@ bool ValidCombo(float* nums, int count) {
 }
 
 // Checks if the lock is open after each combination
-void TestOpen() {
+void TestOpen() { 
   // Go to drop-in area
   if (lock->wheels[lock->wheelCount - 1].openRot == "L") {
     GoTo("R", dropInPoint);
@@ -881,6 +903,53 @@ void TestOpen() {
     GoTo("L", targetPos);
     testingOpen = false;
   }
+}
+
+// Permutates through user given possible numbers
+void SinglePermutations(float* nums, int count, float* current, bool* used, int depth) {
+  if (emergencyStop) {
+    return;
+  }
+
+  // Stop at lock->wheelCount length of combination
+  if (depth == lock->wheelCount) {
+    // Set each wheel to its position with its opening rotation
+    for (int x = 0; x < lock->wheelCount; x++) {
+      SetWheel(x + 1, current[x], lock->wheels[x + 1].openRot);
+    }
+    return;
+  }
+
+  // Build current combination
+  for (int i = 0; i < count; i++) {
+    
+    // If number has not been used yet
+    if (!used[i]) {
+      used[i] = true;                                                 // Mark it used
+      current[depth] = nums[i];                                       // Add it to combo
+      SinglePermutations(nums, count, current, used, depth + 1);      // Test combo
+      used[i] = false;                                                // Mark as unused for future permutations
+    }
+  }
+}
+
+// Try user given possible combinations before auto dialing
+void TryCombinations(float* nums, int count) {
+  if (count <= 0) {
+    return;
+  }
+  float* current = new float[lock->wheelCount];
+  bool* used = new bool[count];
+
+  // Mark each number as unused first
+  for (int i = 0; i < count; i++) {
+    used[i] = false;
+  }
+
+  SinglePermutations(nums, count, current, used, 0);
+  
+  delete[] current;
+  delete[] used;
 }
 
 // Starts auto dialing

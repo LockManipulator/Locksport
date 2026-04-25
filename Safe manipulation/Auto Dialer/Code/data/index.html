@@ -111,6 +111,9 @@
                     Exclusions: Enter numbers or a range going up (i.e. 10-30) that are not to be tested, start and end inclusive, and comma separated (e.g. 5, 17.5, 50-60, 75). If you know the correct number, add a range around it i.e. 21-19 if 20 is the correct number (NOT 19-21 as that excludes the correct number!). Keep in mind your "Test every 'x' numbers" value since if it's even such as "2", then a range around an odd number (e.g. 22-20) will result in no valid possible combinations. If you know a number and it's odd, it's best to allow the number below and above (e.g. 23-19 if 21 is the number).
                     <br><br>
 
+                    <b>Possible known numbers:</b> Possible numbers which might be in the combination. Tries all permutations of these before brute forcing. Enter comma separated numbers.
+                    <br><br>
+
                     <b>Speed:</b> Higher is faster, defaults to 3. The main differences between speeds is the acceleration/deceleration. The top speed only slightly changes as top speed does not make as much difference as the deceleration. If the wheels in a lock spin too freely, then they can carry momentum and keep moving after the dial stops, which is solved by a longer deceleration time. Higher speed is also less torque so reduce speed if the dial is harder to turn. Recommended speed is 2 or 3.<br>
                     Speed 1: ~55 combinations/min<br>
                     Speed 2: ~65 combinations/min<br>
@@ -180,7 +183,7 @@
                     Quick Start will assume a 3 wheel L-R-L dialing sequence with the defaults below.<br><br>
 
                     <h2>Wheels Setup</h2>
-                    <p>Wheels add in order of 1, 2, 3, etc. For exclusions, enter numbers (e.g. 38) or ranges (e.g. 15-25) separated by a comma.</p><br>
+                    <p>Wheels add in order of 1, 2, 3, etc. For exclusions, just enter numbers (e.g. 38) or ranges (e.g. 15-25) separated by a comma. For possible known numbers, enter comma separated numbers.</p><br>
 
                     <label for="wheel-open-rot">Open rotation:</label>
                     <select id="wheel-open-rot" name="wheel-open-rot">
@@ -194,6 +197,9 @@
                     <button type="button" id="add-wheel-button" name="add-wheel-button">Add wheel</button><br>
 
                     <div class="hscrollbox" id="wheels"></div><br>
+
+                    <label for="possible-nums">Possible known numbers:</label>
+                        <input type="text" step="any" id="possible-nums" name="possible-nums"><br>
 
                     <h2>Settings</h2>
                     <label for="speed">Speed (higher is faster):</label>
