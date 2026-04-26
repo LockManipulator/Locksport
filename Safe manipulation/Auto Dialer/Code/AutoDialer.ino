@@ -951,7 +951,7 @@ void SinglePermutations(float* nums, int count, float* current, bool* used, int 
 
       // Dial combination again in case any wheels were messed up
       for (int x = 0; x < lock->wheelCount; x++) {
-        SetWheel(x + 1, curCombo[x], lock->wheels[x].openRot);
+        SetWheel(x + 1, current[x], lock->wheels[x].openRot);
       }
 
       lock->openRot = (lock->openRot == "L") ? "R" : "L";   // Change opening direction
