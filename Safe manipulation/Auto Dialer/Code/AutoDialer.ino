@@ -70,6 +70,7 @@ bool motorRunning = false;               // If motor is running
 bool center = false;                     // If need to center dial
 bool spin = false;                       // If need to spin dial
 bool busy = false;                       // If currently doing something
+bool pauseDialing = false;                      // Whether to pause
 volatile bool emergencyStop = false;     // If needing to suddenly stop (such as lock is open)
 volatile bool stallGuardArmed = false;   // Whether StallGuard is active
 volatile bool testingOpen = false;       // Whether we're trying to open the lock
@@ -156,6 +157,19 @@ void setup() {
     else {
       request->send(200, "text/plain", "false");
     }
+  });
+
+  // Stops everything
+  server.on("/pause", HTTP_GET, [](AsyncWebServerRequest* request) {
+    request->send(200, "text/plain", "true");
+    pauseDialing = true;
+    SendStatusSimple("PAUSED");
+  });
+
+  // Stops everything
+  server.on("/unpause", HTTP_GET, [](AsyncWebServerRequest* request) {
+    request->send(200, "text/plain", "true");
+    pauseDialing = false;
   });
 
   // Stops everything
@@ -1102,6 +1116,17 @@ void AutoDial() {
         SetWheel(x + 1, curCombo[x], lock->wheels[x].openRot);
       }
       TestOpen();   // Test if lock is open
+
+      if (pauseDialing) {
+        driver.rms_current(1000);
+
+        while (pauseDialing) {
+          delay(100);
+        }
+
+        driver.rms_current(2200);
+        delay(250);
+      }
 
       // If opening rotation is unknown
       if (checkBoth) {

@@ -462,6 +462,27 @@ document.getElementById("start-button").addEventListener("click", function () {
     .catch(error => console.error('Error:', error));
 });
 
+document.getElementById("pause-button").addEventListener("click", function () {
+  const pauseState = document.getElementById("pause-button").innerText;
+
+  if (pauseState == "Pause") {
+    document.getElementById("pause-button").innerText = "Unpause";
+
+    fetch('/pause')
+        .then(response => response.text())
+        .then(() => {})
+        .catch(error => console.error('Error:', error));  
+  }
+  else if (pauseState == "Unpause") {
+    document.getElementById("pause-button").innerText = "Pause";
+
+    fetch('/unpause')
+        .then(response => response.text())
+        .then(() => {})
+        .catch(error => console.error('Error:', error));
+  }
+});
+
 document.getElementById("stop-button").addEventListener("click", function () {
   fetch('/stop')
       .then(response => response.text())
