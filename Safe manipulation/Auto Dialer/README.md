@@ -246,6 +246,7 @@ To do
 (I may not get around to any of this)
 1. Improve calibration (or just read raw sg value) to add support for more speeds.
 2. Sort all valid combinations more intelligently e.g. try all valid dates first.
+3. If possilbe numbers in the combination are entered, skip over them while auto dialing to avoid duplicates.
 
 ## License
 This project is licensed under the PolyForm Noncommercial License 1.0.0. 
