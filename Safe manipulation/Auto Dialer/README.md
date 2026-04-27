@@ -36,9 +36,7 @@ Live view of wheel positions and progress
 Can pause and resume
 
 
-
-
-Controls at:
+## Controls
 
 Wifi Name: AutoDialer
 
@@ -106,6 +104,8 @@ My heat inserts are 5mm OD for m3 and 6mm OD for m4. The holes in the model are 
 I have uploaded .step files for easier editing if anyone needs to change dimensions to fit their parts.
 
 ## Wiring
+
+![Schematic](Images/dialer-schematic.png)
 
 TMC5160
 
