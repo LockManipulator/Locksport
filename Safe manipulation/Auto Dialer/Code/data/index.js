@@ -123,6 +123,10 @@ evtSource.onerror = function() {
 let elapsedTimerInterval = null;
 let elapsedTimerRunning = false;
 let elapsedStartTime = 0;
+let estimatedTotalMs = null;
+let lastTotalRecalcTime = 0;
+let lastTotalRecalcCurrent = 0;
+let lastTotalRecalcTotal = 0;
 
 function formatElapsed(ms) {
   const totalSec = Math.floor(ms / 1000);
@@ -138,19 +142,68 @@ function formatElapsed(ms) {
   }
 }
 
-function startElapsedTimer() {
+function updateElapsedLabel() {
+  const elapsed = Date.now() - elapsedStartTime;
+  const elapsedStr = formatElapsed(elapsed);
+  const totalStr = estimatedTotalMs !== null ? formatElapsed(estimatedTotalMs) : "—";
+  document.getElementById("elapsed-label").textContent =
+    "Elapsed Time: " + elapsedStr + " / " + totalStr;
+}
+
+function recalcTotalTime(current, total) {
+  const now = Date.now();
+  // Only recalc if at least 5 seconds have passed since last recalc and we have progress
+  if (current <= 0) return;
+  if (now - lastTotalRecalcTime < 5000) return;
+  const elapsed = now - elapsedStartTime;
+  estimatedTotalMs = Math.round((elapsed / current) * total);
+  lastTotalRecalcTime = now;
+}
+
+function startElapsedTimer(current, total) {
   elapsedStartTime = Date.now();
+  estimatedTotalMs = null;
+  lastTotalRecalcTime = 0;
   elapsedTimerRunning = true;
-  elapsedTimerInterval = setInterval(() => {
-    document.getElementById("elapsed-label").textContent =
-      "Elapsed Time: " + formatElapsed(Date.now() - elapsedStartTime);
-  }, 1000);
+  elapsedTimerInterval = setInterval(updateElapsedLabel, 1000);
 }
 
 function stopElapsedTimer() {
   clearInterval(elapsedTimerInterval);
   elapsedTimerInterval = null;
   elapsedTimerRunning = false;
+  estimatedTotalMs = null;
+}
+
+// Per-wheel attempt tracking
+let wheelAttemptCounts = [];
+let lastWheelValues = [];
+let configuredEveryX = 2;
+let configuredPerWheelTotals = [];
+
+function computePerWheelTotal(everyX, exclusionsList, dropInExclusions) {
+  const allExclusions = dropInExclusions
+    ? exclusionsList.concat(dropInExclusions)
+    : exclusionsList;
+  let count = 0;
+  for (let n = 0; n < 100; n += everyX) {
+    const rounded = Math.round(n * 1000) / 1000;
+    if (!allExclusions.includes(rounded)) count++;
+  }
+  return count;
+}
+
+// Builds the drop-in exclusion list for the last wheel when dropCheck is "N".
+// The drop-in area runs from lcp down to rcp wrapping around 0
+// (e.g. lcp=95, rcp=5 means 95->99->0->5).
+// Numbers inside that arc are excluded.
+function buildDropInExclusions(everyX, lcp, rcp) {
+  const excluded = [];
+  for (let n = 0; n < 100; n += everyX) {
+    const rounded = Math.round(n * 1000) / 1000;
+    if (rounded >= lcp || rounded <= rcp) excluded.push(rounded);
+  }
+  return excluded;
 }
 
 function updateLiveView(jsonStr) {
@@ -172,8 +225,35 @@ function updateLiveView(jsonStr) {
   const values = document.getElementById("live-wheels-values");
 
   if (data.wheels && data.wheels.length > 0) {
+    // Reset tracking arrays if wheel count changed
+    if (wheelAttemptCounts.length !== data.wheels.length) {
+      wheelAttemptCounts = new Array(data.wheels.length).fill(0);
+      lastWheelValues = new Array(data.wheels.length).fill(null);
+    }
+
+    // Reset counts when status goes back to Waiting
+    if (data.status === "Waiting") {
+      wheelAttemptCounts = new Array(data.wheels.length).fill(0);
+      lastWheelValues = new Array(data.wheels.length).fill(null);
+    }
+
+    // Increment attempt count when a wheel's value changes; wrap at that wheel's total.
+    // If a wheel changes, reset all wheels after it as a safeguard.
+    data.wheels.forEach((num, i) => {
+      if (lastWheelValues[i] !== null && lastWheelValues[i] !== num) {
+        const wTotal = configuredPerWheelTotals[i] || 1;
+        wheelAttemptCounts[i] = (wheelAttemptCounts[i] + 1) % wTotal;
+        // Reset all subsequent wheels
+        for (let j = i + 1; j < data.wheels.length; j++) {
+          wheelAttemptCounts[j] = 0;
+        }
+      }
+      lastWheelValues[i] = num;
+    });
+
     header.innerHTML = "";
     values.innerHTML = "";
+
     data.wheels.forEach((num, i) => {
       const hCell = document.createElement("div");
       hCell.className = "live-wheel-cell";
@@ -187,9 +267,28 @@ function updateLiveView(jsonStr) {
         header.appendChild(sep);
       }
 
+      // Display 1-based: internal count is 0-based so add 1, but cap at perWheelTotal
+      const attempts = wheelAttemptCounts[i];
+      const perWheelTotal = configuredPerWheelTotals[i] || 1;
+      const displayAttempts = Math.min(attempts + 1, perWheelTotal);
+      const pct = perWheelTotal > 0 ? Math.min(1, displayAttempts / perWheelTotal) : 0;
+      const r = 18;
+      const circ = 2 * Math.PI * r;
+      const offset = circ - pct * circ;
+
       const vCell = document.createElement("div");
       vCell.className = "live-wheel-cell live-wheel-num";
-      vCell.textContent = num;
+      vCell.innerHTML =
+        num +
+        '<div class="wheel-prog-wrap">' +
+        '<svg width="44" height="44" viewBox="0 0 44 44" style="transform:rotate(-90deg)">' +
+        '<circle cx="22" cy="22" r="' + r + '" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="4"/>' +
+        '<circle cx="22" cy="22" r="' + r + '" fill="none" stroke="#fbbf24" stroke-width="4" ' +
+        'stroke-linecap="round" stroke-dasharray="' + circ.toFixed(2) + '" ' +
+        'stroke-dashoffset="' + offset.toFixed(2) + '"/>' +
+        '</svg>' +
+        '<span class="wheel-prog-label">' + displayAttempts + "/" + perWheelTotal + '</span>' +
+        '</div>';
       values.appendChild(vCell);
 
       if (i < data.wheels.length - 1) {
@@ -212,13 +311,17 @@ function updateLiveView(jsonStr) {
     progressLabel.textContent = current + " / " + total;
   }
 
-  const elapsedLabel = document.getElementById("elapsed-label");
   if (data.status === "Waiting") {
     stopElapsedTimer();
+    document.getElementById("elapsed-label").textContent = "Elapsed Time: —";
   } else if (data.status === "EMERGENCY STOP") {
     stopElapsedTimer();
-  } else if (!elapsedTimerRunning) {
-    startElapsedTimer();
+  } else {
+    if (!elapsedTimerRunning) {
+      startElapsedTimer();
+    }
+    recalcTotalTime(current, total);
+    updateElapsedLabel();
   }
 }
 
@@ -262,6 +365,15 @@ document.getElementById("quick-start-button").addEventListener("click", function
     speed: speed,
     w1start: w1start
   };
+  configuredEveryX = parseFloat(everyX) || 2;
+  wheelAttemptCounts = [];
+  lastWheelValues = [];
+  const dropInExcl = dropCheck === "N"
+    ? buildDropInExclusions(configuredEveryX, parseFloat(lcp), parseFloat(rcp))
+    : null;
+  configuredPerWheelTotals = payload.wheels.map((w, i) =>
+    computePerWheelTotal(configuredEveryX, [], i === payload.wheels.length - 1 ? dropInExcl : null)
+  );
   fetch('/start', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -328,6 +440,15 @@ document.getElementById("start-button").addEventListener("click", function () {
     w1start: w1start,
     possibleNums: possibleNums
   };
+  configuredEveryX = parseFloat(everyX) || 2;
+  wheelAttemptCounts = [];
+  lastWheelValues = [];
+  const dropInExcl = dropCheck === "N"
+    ? buildDropInExclusions(configuredEveryX, parseFloat(lcp), parseFloat(rcp))
+    : null;
+  configuredPerWheelTotals = wheels.map((w, i) =>
+    computePerWheelTotal(configuredEveryX, w.exclusions, i === wheels.length - 1 ? dropInExcl : null)
+  );
   fetch('/start', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
