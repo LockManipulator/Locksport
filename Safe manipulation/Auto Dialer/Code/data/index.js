@@ -180,6 +180,12 @@ let wheelAttemptCounts = [];
 let lastWheelValues = [];
 let configuredEveryX = 2;
 let configuredPerWheelTotals = [];
+let configuredRCP = 0;
+let configuredLCP = 0;
+let configuredCheckDropIn = false;
+let configuredWheelExclusions = [];  // Array of exclusion arrays, one per wheel
+let permutationsMode = false;     // True when possible known numbers were given
+let permutationsNumCount = 0;     // How many possible numbers were given
 
 function computePerWheelTotal(everyX, exclusionsList, dropInExclusions) {
   const allExclusions = dropInExclusions
@@ -210,6 +216,25 @@ function updateLiveView(jsonStr) {
   let data;
   try { data = JSON.parse(jsonStr); } catch(e) { return; }
 
+  // Rebuild config from status data on reconnect (page refresh loses JS state)
+  if (data.everyX && configuredPerWheelTotals.length === 0) {
+    configuredEveryX = data.everyX;
+    configuredRCP = data.rcp;
+    configuredLCP = data.lcp;
+    configuredCheckDropIn = data.checkDropIn;
+    configuredWheelExclusions = (data.wheelMeta || []).map(m => m.excl || []);
+    const dropInExcl = !data.checkDropIn
+      ? buildDropInExclusions(configuredEveryX, configuredLCP, configuredRCP)
+      : null;
+    configuredPerWheelTotals = configuredWheelExclusions.map((excl, i) =>
+      computePerWheelTotal(
+        configuredEveryX,
+        excl,
+        i === configuredWheelExclusions.length - 1 ? dropInExcl : null
+      )
+    );
+  }
+
   const statusText = document.getElementById("status-text");
   statusText.textContent = data.status;
   statusText.className = "";
@@ -237,19 +262,41 @@ function updateLiveView(jsonStr) {
       lastWheelValues = new Array(data.wheels.length).fill(null);
     }
 
-    // Increment attempt count when a wheel's value changes; wrap at that wheel's total.
-    // If a wheel changes, reset all wheels after it as a safeguard.
-    data.wheels.forEach((num, i) => {
-      if (lastWheelValues[i] !== null && lastWheelValues[i] !== num) {
-        const wTotal = configuredPerWheelTotals[i] || 1;
-        wheelAttemptCounts[i] = (wheelAttemptCounts[i] + 1) % wTotal;
-        // Reset all subsequent wheels
-        for (let j = i + 1; j < data.wheels.length; j++) {
-          wheelAttemptCounts[j] = 0;
-        }
+    // Switch out of permutations mode once the firmware signals brute-force phase
+    if (permutationsMode && data.phase === "brute") {
+      permutationsMode = false;
+      wheelAttemptCounts = new Array(data.wheels.length).fill(0);
+      lastWheelValues = new Array(data.wheels.length).fill(null);
+    }
+
+    if (permutationsMode) {
+      // In permutations mode, derive each wheel's position index directly from
+      // the current permutation number.  Permutations are generated depth-first
+      // (outermost wheel changes slowest, innermost wheel changes fastest), so:
+      //   wheel 0 (outermost): index = floor((current-1) / n^(W-1)) % n
+      //   wheel W-1 (innermost): index = (current-1) % n
+      const W = data.wheels.length;
+      const n = permutationsNumCount;
+      const cur = Math.max(0, (data.current || 1) - 1); // convert to 0-based
+      for (let i = 0; i < W; i++) {
+        const divisor = Math.pow(n, W - 1 - i);
+        wheelAttemptCounts[i] = Math.floor(cur / divisor) % n;
       }
-      lastWheelValues[i] = num;
-    });
+    } else {
+      // Increment attempt count when a wheel's value changes; wrap at that wheel's total.
+      // If a wheel changes, reset all wheels after it as a safeguard.
+      data.wheels.forEach((num, i) => {
+        if (lastWheelValues[i] !== null && lastWheelValues[i] !== num) {
+          const wTotal = configuredPerWheelTotals[i] || 1;
+          wheelAttemptCounts[i] = (wheelAttemptCounts[i] + 1) % wTotal;
+          // Reset all subsequent wheels
+          for (let j = i + 1; j < data.wheels.length; j++) {
+            wheelAttemptCounts[j] = 0;
+          }
+        }
+        lastWheelValues[i] = num;
+      });
+    }
 
     header.innerHTML = "";
     values.innerHTML = "";
@@ -269,7 +316,7 @@ function updateLiveView(jsonStr) {
 
       // Display 1-based: internal count is 0-based so add 1, but cap at perWheelTotal
       const attempts = wheelAttemptCounts[i];
-      const perWheelTotal = configuredPerWheelTotals[i] || 1;
+      const perWheelTotal = permutationsMode ? permutationsNumCount : (configuredPerWheelTotals[i] || 1);
       const displayAttempts = Math.min(attempts + 1, perWheelTotal);
       const pct = perWheelTotal > 0 ? Math.min(1, displayAttempts / perWheelTotal) : 0;
       const r = 18;
@@ -309,11 +356,13 @@ function updateLiveView(jsonStr) {
     const pct = Math.min(100, (current / total) * 100);
     progressFill.style.width = pct + "%";
     progressLabel.textContent = current + " / " + total;
+    document.getElementById("probability-label").textContent = "Probability of having found combination: " + pct.toFixed(1) + "%";
   }
 
   if (data.status === "Waiting") {
     stopElapsedTimer();
     document.getElementById("elapsed-label").textContent = "Elapsed Time: —";
+    document.getElementById("probability-label").textContent = "Probability of having found combination: —";
   } else if (data.status === "EMERGENCY STOP") {
     stopElapsedTimer();
   } else {
@@ -332,57 +381,15 @@ document.getElementById("cur-num-input").addEventListener("keydown", function (e
     }
 });
 
-document.getElementById("quick-start-button").addEventListener("click", function () {
-  const rcp = document.getElementById("rcp-input").value;
-  const lcp = document.getElementById("lcp-input").value;
-  const everyX = document.getElementById("everyX").value;
-  const avoidWithin = document.getElementById("avoid-range").value;
-  const openRot = document.getElementById("open-rot").value;
-  const openDistance = document.getElementById("open-distance").value;
-  const rotConversion = document.getElementById("rotConversion").value;
-  const dropCheck = document.getElementById("drop-check").value;
-  const speed = document.getElementById("speed").value;
-  const w1start = document.getElementById("w1start").value;
-  
-  if (!rcp || !lcp) {
-    alert("Please enter both contact points before starting!");
-    return;
-  }
-  const payload = {
-    wheels: [
-      { wheel: 1, openRot: 'L', exclusions: [] },
-      { wheel: 2, openRot: 'R', exclusions: [] },
-      { wheel: 3, openRot: 'L', exclusions: [] }
-    ],
-    rcp: parseFloat(rcp),
-    lcp: parseFloat(lcp),
-    everyX: parseFloat(everyX),
-    avoidWithin: parseFloat(avoidWithin),
-    openRot: openRot,
-    openDistance: parseFloat(openDistance),
-    rotConversion: parseFloat(rotConversion),
-    dropCheck: dropCheck,
-    speed: speed,
-    w1start: w1start
-  };
-  configuredEveryX = parseFloat(everyX) || 2;
-  wheelAttemptCounts = [];
-  lastWheelValues = [];
-  const dropInExcl = dropCheck === "N"
-    ? buildDropInExclusions(configuredEveryX, parseFloat(lcp), parseFloat(rcp))
-    : null;
-  configuredPerWheelTotals = payload.wheels.map((w, i) =>
-    computePerWheelTotal(configuredEveryX, [], i === payload.wheels.length - 1 ? dropInExcl : null)
-  );
-  fetch('/start', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
+document.getElementById("resume-previous-session-button").addEventListener("click", function () {
+  fetch('/powerLossResume')
     .then(response => response.text())
     .then(text => {
-      console.log("Start response:", text);
-      switchTab('view');
+      if (text === "true") {
+        switchTab('view');
+      } else {
+        alert("No previous session found.");
+      }
     })
     .catch(error => console.error('Error:', error));
 });
@@ -441,8 +448,14 @@ document.getElementById("start-button").addEventListener("click", function () {
     possibleNums: possibleNums
   };
   configuredEveryX = parseFloat(everyX) || 2;
+  configuredRCP = parseFloat(rcp);
+  configuredLCP = parseFloat(lcp);
+  configuredCheckDropIn = dropCheck === "Y";
+  configuredWheelExclusions = wheels.map(w => w.exclusions);
   wheelAttemptCounts = [];
   lastWheelValues = [];
+  permutationsMode = possibleNums.length > 0;
+  permutationsNumCount = possibleNums.length;
   const dropInExcl = dropCheck === "N"
     ? buildDropInExclusions(configuredEveryX, parseFloat(lcp), parseFloat(rcp))
     : null;
@@ -466,17 +479,17 @@ document.getElementById("pause-button").addEventListener("click", function () {
   const pauseState = document.getElementById("pause-button").innerText;
 
   if (pauseState == "Pause") {
-    document.getElementById("pause-button").innerText = "Unpause";
+    document.getElementById("pause-button").innerText = "Resume";
 
     fetch('/pause')
         .then(response => response.text())
         .then(() => {})
         .catch(error => console.error('Error:', error));  
   }
-  else if (pauseState == "Unpause") {
+  else if (pauseState == "Resume") {
     document.getElementById("pause-button").innerText = "Pause";
 
-    fetch('/unpause')
+    fetch('/resume')
         .then(response => response.text())
         .then(() => {})
         .catch(error => console.error('Error:', error));
