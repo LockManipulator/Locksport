@@ -23,13 +23,6 @@ USB Mode: Hardware CDC and JTAG
 
 If speed, acceleration, deceleration, motor current, chopper off-time, or microstep is changed, you must test the CalibrateStall() code with a known combination!
 StallGuard is very finicky and has to be tuned for many variables. The current calibration process will not work if some of these variables change.
-
-Changes
--------
-Keeps track of and skips combinations already tried from given possible known numbers
-Fixed total per wheel tries if given possible known numbers
-Success probability meter
-Resume on power loss
 */
 
 #include <Arduino.h>
@@ -115,6 +108,7 @@ AsyncWebServer server(80);               // Webserver
 AsyncEventSource events("/events");      // SSE endpoint
 unsigned long previousSendTime = 0;      // Last time data was sent to the webserver
 String header;
+String startBody = "";
 
 TMC5160Stepper driver(CS_PIN, R_SENSE, MOSI_PIN, MISO_PIN, SCK_PIN);  // Create driver
 SafeLock* lock = new SafeLock;                                        // Create lock object
@@ -219,9 +213,24 @@ void setup() {
         return;
       }
 
-      DynamicJsonDocument doc(4096);
-      DeserializationError error = deserializeJson(doc, data, len);
+      // Accumulate chunks
+      if (index == 0) {
+        startBody = "";  // Reset on first chunk
+      }
+      for (size_t i = 0; i < len; i++) {
+        startBody += (char)data[i];
+      }
+
+      // Only parse once all chunks have arrived
+      if (index + len < total) {
+        return;
+      }
+
+      DynamicJsonDocument doc(16384);
+      DeserializationError error = deserializeJson(doc, startBody);
       if (error) {
+        Serial.print("JSON error: ");
+        Serial.println(error.c_str());
         request->send(400, "text/plain", "Invalid JSON");
         return;
       }
@@ -285,11 +294,11 @@ void setup() {
       speed = doc["speed"].as<int>();
 
       if (speed == 1) {
-        maxDelay = 1100;
+        maxDelay = 1800;
         minDelay = 300; 
       }
       else if (speed == 2) {
-        maxDelay = 900;
+        maxDelay = 1200;
         minDelay = 250; 
       }
       else if (speed == 3) {
@@ -1071,13 +1080,17 @@ void CalibrateStall() {
   emergencyStop = false;
   
   // Test different stall values
-  testingOpen = true;
   for (int x = 50; x >= -64; x -= 2) {
     SendLog("Testing: " + String(x));
     driver.sgt(x);
 
     // Move the same way to calibrate stall as when detecting an open
+    testingOpen = true;
     Move(lock->openRot, lock->openPast);
+
+    // Go back
+    testingOpen = false;
+    Move((lock->openRot == "L") ? "R" : "L", lock->openPast);
 
     // Set it to just above where it stalled
     if (emergencyStop) {
