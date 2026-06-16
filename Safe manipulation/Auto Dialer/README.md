@@ -2,7 +2,7 @@
 
 Video: https://youtu.be/TwCeOCCC2Mc
 
-An auto dialer is a device which automatically tries possible combinations for most group 2 and group 1 mechanical safe locks and stops when it detects the lock is open. Commercial auto dialers start at $2,000+ and are usually restrcited to locksmith or government purchases only. I strongly disagree with this mindset so here's one that beats all the others on the market and is only ~$100-$200 depending on where you live and what you might already have. I am far from the most capable so the source code is available for anyone to improve upon. 
+An auto dialer is a device which automatically tries possible combinations for most group 2 and group 1 mechanical safe locks and stops when it detects the lock is open. Commercial auto dialers start at $2,000+ and are usually restrcited to locksmith or government purchases only. I strongly disagree with this mindset so here's one that beats all the others on the market and is only ~$150-$200 depending on where you live and what you might already have. I am far from the most capable so the source code is available for anyone to improve upon. 
 
 ![Full](Images/Full.jpg)
 ![Gripper](Images/Gripper.jpg)
