@@ -23,6 +23,9 @@ USB Mode: Hardware CDC and JTAG
 
 If speed, acceleration, deceleration, motor current, chopper off-time, or microstep is changed, you must test the CalibrateStall() code with a known combination!
 StallGuard is very finicky and has to be tuned for many variables. The current calibration process will not work if some of these variables change.
+
+Changes
+1. Fixed reconnect crash
 */
 
 #include <Arduino.h>
@@ -126,7 +129,7 @@ void setup() {
   WifiSetup(ssidap, passwordap);
 
   events.onConnect([](AsyncEventSourceClient* client) {
-    client->send("", NULL, millis(), 10000);
+      client->send("", NULL, 0, 10000);  // 0 instead of millis()
   });
   server.addHandler(&events);
 
@@ -639,7 +642,8 @@ bool LoadProgress(float* curCombo, int* numsTried, int& current, int& count) {
 
 // Send message to webserver
 void SendLog(String message) {
-  events.send(message.c_str(), "log", millis());
+  if (events.count() > 0)
+    events.send(message.c_str(), "log", millis());
 }
 
 // Sends wheels config to web server
@@ -664,6 +668,8 @@ void LogWheels() {
 
 // Send status update to web server
 void SendStatus(String status, float* wheelNums, int wheelCount, int current, int total, String phase = "brute") {
+  if (events.count() == 0) return;
+
   String json = "{\"status\":\"" + status + "\",\"wheels\":[";
   for (int i = 0; i < wheelCount; i++) {
     json += String(wheelNums[i], 1);
@@ -690,8 +696,10 @@ void SendStatus(String status, float* wheelNums, int wheelCount, int current, in
 
 // Send status with no wheel numbers (waiting / emergency stop)
 void SendStatusSimple(String status) {
-  String json = "{\"status\":\"" + status + "\",\"wheels\":[],\"current\":0,\"total\":0}";
-  events.send(json.c_str(), "status", millis());
+  if (events.count() > 0) {
+    String json = "{\"status\":\"" + status + "\",\"wheels\":[],\"current\":0,\"total\":0}";
+    events.send(json.c_str(), "status", millis());
+  }
 }
 
 // Normalizes numbers to within the 0-100 dial range
